@@ -2,13 +2,15 @@
 # Program by Kirill Obuhov
 #
 # Version: 1.0
-# Last Updatez: 30.11.2018
+# Last Update: 02.12.2018
 # File: menu.py
 # File Description: Main menu program file
 # ----------------------------------------------------
 import pygame
+from player.player import Player, Bullet
 
-"# Menu main class #"
+
+# Main menu class
 class Menu:
     def __init__(self, paragraphs):
         self.paragraphs = paragraphs
@@ -59,3 +61,19 @@ class Menu:
                         exit()
             win.blit(screen, [0, 0])
             pygame.display.flip()
+
+
+def killed(player1, player2, screen, win):
+    if player1.is_killed() or player2.is_killed():
+        par = [(310, 140, u'Try again', (250, 250, 30), (250, 30, 250), 0),
+               (310, 210, u'Main Menu', (250, 250, 30), (250, 30, 250), 1),
+               (310, 280, u'Exit', (250, 250, 30), (250, 30, 250), 2)]
+        end_menu = Menu(par)
+        game_flag = end_menu.menu(screen, win)
+        # If user have chosen 'try again' return 1
+        if game_flag == 1:
+            return 1
+        # If user have chosen 'Main Menu' return 2
+        if game_flag == 2:
+            return 2
+    return 0

@@ -13,19 +13,13 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 ORANGE = (255, 119, 0)
-ZOMBIE_GREEN = (122, 172, 34)
 (DIR_UP, DIR_RIGHT, DIR_DOWN, DIR_LEFT) = range(4)
 
 
 class Player(pygame.sprite.Sprite):
-    speed = 5
     width = 60
     height = 60
-    x = 0
-    y = 0
     hp = 3
-    x_center = x + width/2
-    y_center = y + height / 2
 
     def __init__(self, list_file_name, speed=2, x=0, y=0, direction=randint(0, 3)):
         pygame.sprite.Sprite.__init__(self)
@@ -41,11 +35,11 @@ class Player(pygame.sprite.Sprite):
         self.surface = pygame.Surface((self.width, self.height))
         self.surface.blit(self.image, (0, 0), (0, 0, self.width, self.height))
         self.rect = self.surface.get_rect()
-        ''' self.image.get_rect(center=(x + self.width/2, y + self.height / 2)) '''
-
         self.speed = speed
         self.x = x
         self.y = y
+        self.x_center = self.x + self.width / 2
+        self.y_center = self.y + self.height / 2
 
     def draw(self, win):
         win.blit(self.image, self.rect)
@@ -108,6 +102,11 @@ class Player(pygame.sprite.Sprite):
         else:
             self.speed = 1
 
+    def is_killed(self):
+        if self.hp > 0:
+            return False
+        return True
+
 
 def set_coord(player):
     if player.direction == DIR_UP:
@@ -156,3 +155,11 @@ class Bullet(pygame.sprite.Sprite):
 
     def draw(self, win):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+
+    def is_hit(self, player):
+        flag_x = self.x > player.x and self.x < player.x + player.width
+        flag_y = self.y > player.y and self.y < player.y + player.height
+        if flag_x and flag_y:
+            return True
+        return False
+
