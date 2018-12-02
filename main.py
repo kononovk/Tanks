@@ -7,8 +7,8 @@
 # File Description: Main program file
 # ----------------------------------------------------
 import pygame
-from IFNK_Shooting.player import player as plr
-from IFNK_Shooting.menu import Menu
+import player as plr
+# menu import Menu
 from random import randint
 
 "# Data variables #"
