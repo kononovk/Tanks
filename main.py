@@ -65,7 +65,7 @@ if game_flag == 2:
         info_string.blit(hp_font.render(u"(PL1) Lives: " + str(player1.hp), 1, (255, 0, 0)), (10, 5))
         info_string.blit(hp_font.render(u"(PL2) Lives: " + str(player2.hp), 1, (255, 0, 0)), (window_width - 250, 5))
 
-        "# Main event loop #"
+        "# event loop #"
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -106,7 +106,7 @@ if game_flag == 2:
         if keys[pygame.K_ESCAPE]:
             game.menu(screen, win)
 
-        "Shooting processing"
+        "# Shooting processing #"
         if keys[pygame.K_SPACE]:
             if len(player1_bullets) < 1:
                 player1_bullets.append(plr.Bullet(player1))
@@ -117,12 +117,16 @@ if game_flag == 2:
             bullet.draw(win)
         for bullet in player2_bullets:
             bullet.draw(win)
-        if killed(player1, player2, screen, win) == 1:
+
+        tmp = killed(player1, player2, screen, win)
+        if tmp:
             screen.fill((0, 0, 0))
             player1.hp = 3
             player2.hp = 3
             player1.x, player1.y = 100, 100
             player2.x, player2.y = window_width - 150, window_height - 150
+            if tmp == 2:
+                game.menu(screen, win)
 
 if game_flag == 1:
     exit()

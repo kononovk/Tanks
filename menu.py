@@ -23,12 +23,12 @@ class Menu:
                 host.blit(font.render(i[2], 1, i[4]), (i[0], i[1]))
 
     "# Menu starting function#"
-    def menu(self, screen, win):
+    def menu(self, screen, win, menu_color=(0, 100, 200)):
         done = True
         font_menu = pygame.font.Font(r"textures\Fonts.ttf", 50)
         prg = 0
         while done:
-            screen.fill((0, 100, 200))
+            screen.fill(menu_color)
             mp = pygame.mouse.get_pos()
             for i in self.paragraphs:
                 if (mp[0] > i[0]) and (mp[0] < i[0]+155) and (mp[1] > i[1]) and (mp[1] < i[1]+150):
@@ -69,11 +69,11 @@ def killed(player1, player2, screen, win):
                (310, 210, u'Main Menu', (250, 250, 30), (250, 30, 250), 1),
                (310, 280, u'Exit', (250, 250, 30), (250, 30, 250), 2)]
         end_menu = Menu(par)
-        game_flag = end_menu.menu(screen, win)
+        game_flag = end_menu.menu(screen, win, (0, 0, 0))
         # If user have chosen 'try again' return 1
         if game_flag == 1:
             return 1
         # If user have chosen 'Main Menu' return 2
         if game_flag == 2:
             return 2
-    return 0
+    return False
