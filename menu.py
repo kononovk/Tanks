@@ -8,7 +8,10 @@
 # ----------------------------------------------------
 import pygame
 from player.player import Player, Bullet
+from bot.bot import Bot, Bullet_Bot
 
+tank_list = [r'textures\tanks\tank_up.png', r'textures\tanks\tank_right.png',
+             r'textures\tanks\tank_down.png', r'textures\tanks\tank_left.png']
 
 # Main menu class
 class Menu:
@@ -77,3 +80,27 @@ def killed(player1, player2, screen, win):
         if game_flag == 2:
             return 2
     return False
+
+def killed_player(player1, screen, win):
+    if player1.is_killed():
+        par = [(310, 140, u'Try again', (250, 250, 30), (250, 30, 250), 0),
+               (310, 210, u'Main Menu', (250, 250, 30), (250, 30, 250), 1),
+               (310, 280, u'Exit', (250, 250, 30), (250, 30, 250), 2)]
+        end_menu = Menu(par)
+        game_flag = end_menu.menu(screen, win, (0, 0, 0))
+        # If user have chosen 'try again' return 1
+        if game_flag == 1:
+            return 1
+        # If user have chosen 'Main Menu' return 2
+        if game_flag == 2:
+            return 2
+    return False
+
+def killed_bot(addbot):
+    for i in range(0,len(addbot)):
+        if addbot[i].is_killed():
+            addbot.pop(i)
+            addbot.append(Bot(tank_list, 1))
+            addbot.append(Bot(tank_list, 1))
+    return addbot
+

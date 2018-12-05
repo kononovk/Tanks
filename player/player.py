@@ -15,13 +15,12 @@ BLUE = (0, 0, 255)
 ORANGE = (255, 119, 0)
 (DIR_UP, DIR_RIGHT, DIR_DOWN, DIR_LEFT) = range(4)
 
-
 class Player(pygame.sprite.Sprite):
     width = 60
     height = 60
     hp = 3
 
-    def __init__(self, list_file_name, speed=2, x=0, y=0, direction=randint(0, 3)):
+    def __init__(self, list_file_name, speed, x=0, y=0, direction=randint(0, 3)):
         pygame.sprite.Sprite.__init__(self)
         # images for different directions
         self.image_up = pygame.image.load(list_file_name[0]).convert_alpha()
@@ -44,7 +43,7 @@ class Player(pygame.sprite.Sprite):
     def draw(self, win):
         win.blit(self.image, self.rect)
 
-    def update(self, keys, window_width, window_height, pl, num=0):
+    def update(self, keys, window_width, window_height, pl, platforms, num=0):
         if num == 0:
             if keys[pygame.K_a] and self.x > 0:
                 self.prev_direction = self.direction
@@ -61,7 +60,7 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.image_down
                 self.direction = DIR_DOWN
                 self.y += self.speed
-            elif (keys[pygame.K_w] or keys[pygame.K_w]) and self.y > 30:
+            elif keys[pygame.K_w] and self.y > 30:
                 self.prev_direction = self.direction
                 self.image = self.image_up
                 self.direction = DIR_UP
@@ -90,17 +89,35 @@ class Player(pygame.sprite.Sprite):
         self.x_center = self.x + self.width / 2
         self.y_center = self.y + self.height / 2
         self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
-        self.collide(pl)
+        self.collide(pl, platforms)
 
-    def collide(self, player2):
+    def collide(self, player2, platforms):
         if pygame.sprite.collide_rect(self, player2):
             if self.direction == self.prev_direction:
                 self.speed = 0
             else:
-                self.prev_direction = self.direction
                 self.speed = 1
+                self.prev_direction = self.direction
         else:
             self.speed = 1
+        if platforms != None:
+            if self.rect.collidelist(platforms) != -1:
+                if self.direction == self.prev_direction:
+                    self.speed = 0
+                    if self.direction == DIR_RIGHT:
+                        self.x = platforms[self.rect.collidelist(platforms)].x - 60
+                    if self.direction == DIR_LEFT:
+                        self.x = platforms[self.rect.collidelist(platforms)].x + 60
+                    if self.direction == DIR_UP:
+                        self.y = platforms[self.rect.collidelist(platforms)].y + 60
+                    if self.direction == DIR_DOWN:
+                        self.y = platforms[self.rect.collidelist(platforms)].y - 60
+
+                else:
+                    self.speed = 1
+                    self.prev_direction = self.direction
+            else:
+                self.speed = 1
 
     def is_killed(self):
         if self.hp > 0:
@@ -153,8 +170,11 @@ class Bullet(pygame.sprite.Sprite):
         self.speed_x = 2 * self.facing_x
         self.speed_y = 2 * self.facing_y
 
+
     def draw(self, win):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+
+
 
     def is_hit(self, player):
         flag_x = self.x > player.x and self.x < player.x + player.width
@@ -162,4 +182,6 @@ class Bullet(pygame.sprite.Sprite):
         if flag_x and flag_y:
             return True
         return False
+
+
 
