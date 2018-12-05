@@ -91,15 +91,27 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
         self.collide(pl, platforms)
 
+    "# Main collides processing function #"
     def collide(self, player2, platforms):
+        "# Collides with another player processing #"
         if pygame.sprite.collide_rect(self, player2):
             if self.direction == self.prev_direction:
                 self.speed = 0
+                if self.direction == DIR_RIGHT:
+                    self.x = player2.x - player2.width
+                if self.direction == DIR_LEFT:
+                    self.x = player2.x + player2.width
+                if self.direction == DIR_UP:
+                    self.y = player2.y + player2.height
+                if self.direction == DIR_DOWN:
+                    self.y = player2.y - player2.height
             else:
                 self.speed = 1
                 self.prev_direction = self.direction
         else:
             self.speed = 1
+
+        "# Collides with platforms processing #"
         if platforms != None:
             if self.rect.collidelist(platforms) != -1:
                 if self.direction == self.prev_direction:
@@ -112,7 +124,6 @@ class Player(pygame.sprite.Sprite):
                         self.y = platforms[self.rect.collidelist(platforms)].y + 60
                     if self.direction == DIR_DOWN:
                         self.y = platforms[self.rect.collidelist(platforms)].y - 60
-
                 else:
                     self.speed = 1
                     self.prev_direction = self.direction
