@@ -62,8 +62,6 @@ class Bot(pygame.sprite.Sprite):
                 self.image = self.image_up
                 self.direction = DIR_UP
                 self.y -= self.speed
-
-
         self.x_center = self.x + self.width / 2
         self.y_center = self.y + self.height / 2
         self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
@@ -96,11 +94,11 @@ class Bot(pygame.sprite.Sprite):
         else:
             self.speed = 1
 
-
     def is_killed(self):
         if self.hp > 0:
             return False
         return True
+
 
 def set_coord(bot):
     if bot.direction == DIR_UP:
@@ -116,6 +114,7 @@ def set_coord(bot):
         x = int(bot.x + bot.width / 2)
         y = bot.y + bot.height
     return [x, y]
+
 
 class Bullet_Bot(pygame.sprite.Sprite):
     def __init__(self, bot, radius=4, color=WHITE):
