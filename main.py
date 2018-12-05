@@ -119,7 +119,7 @@ while run_main:
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
                 for p in platforms:
-                    if (bullet.x < p.x + 60 and bullet.x > p.x) and (bullet.y < p.y + 60 and bullet.y > p.y):
+                    if (bullet.x <= p.x + 60 and bullet.x >= p.x) and (bullet.y <= p.y + 60 and bullet.y >= p.y):
                         player1_bullets.pop(player1_bullets.index(bullet))
                 for bot in addbot:
                     if bullet.is_hit(bot) and len(player1_bullets) != 0:
@@ -137,7 +137,7 @@ while run_main:
                 else:
                     bot_bullets.pop(bot_bullets.index(bullet))
                 for p in platforms:
-                    if (bullet.x < p.x + 60 and bullet.x > p.x) and (bullet.y < p.y + 60 and bullet.y > p.y):
+                    if (bullet.x <= p.x + 60 and bullet.x >= p.x) and (bullet.y <= p.y + 60 and bullet.y >= p.y):
                         bot_bullets.pop(bot_bullets.index(bullet))
                 if bullet.is_hit_bot(player1):
                     bot_bullets.pop(bot_bullets.index(bullet))
