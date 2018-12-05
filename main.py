@@ -1,5 +1,5 @@
 # ----------------------------------------------------
-# Program by Nickolay Kononov and Kirill Obukhov
+# Program by Nickolay Kononov
 #
 # Version: 2.0
 # Last Update: 29.11.2018
@@ -53,9 +53,8 @@ PLATFORM_WIDTH = 60
 PLATFORM_HEIGHT = 60
 PLATFORM_COLOR = "#FF6262"
 
-addbot = []
 
-"---# The beginning of rendering cycle #---"
+"---# The beginning of rendering cycle with 2 players #---"
 run, run_main = True, True
 
 while run_main:
@@ -64,8 +63,8 @@ while run_main:
         addbot = []
         addbot.append(boobs.Bot(tank_list, 1))
         bot_bullets = []
-        entities = pygame.sprite.Group() # all objects
-        platforms = []                   # то, во что мы будем врезаться или опираться
+        entities = pygame.sprite.Group()        # all objects
+        platforms = []                          # blocks, we will bump on
         entities.add(player1)
         noblock = []
         level = ['---------------',
@@ -79,15 +78,15 @@ while run_main:
                  '-         -   -',
                  '-         -   -',
                  '---------------']
-        x = y = 0                        # coordinates
-        for row in level:                # all string
-            for col in row:              # each character
+        x = y = 0                               # coordinates
+        for row in level:                       # all string
+            for col in row:                     # each symbol
                 if col == "-":
-                    pf = plt.Platform(x, y, win)
+                    pf = plt.Platform(x, y)
                     entities.add(pf)
                     platforms.append(pf)
-                x += PLATFORM_WIDTH  # блоки платформы ставятся на ширине блоков
-            y += PLATFORM_HEIGHT  # то же самое и с высотой
+                x += PLATFORM_WIDTH             # блоки платформы ставятся на ширине блоков
+            y += PLATFORM_HEIGHT                # то же самое и с высотой
             x = 0
         while run:
             screen.fill((0, 0, 0))
@@ -119,8 +118,9 @@ while run_main:
                     bullet.y += bullet.speed_y
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
-                if bullet.x in platforms:
-                    player1_bullets.pop(player1_bullets.index(bullet))
+                for p in platforms:
+                    if (bullet.x < p.x + 60 and bullet.x > p.x) and (bullet.y < p.y + 60 and bullet.y > p.y):
+                        player1_bullets.pop(player1_bullets.index(bullet))
                 for bot in addbot:
                     if bullet.is_hit(bot) and len(player1_bullets) != 0:
                         player1_bullets.pop(player1_bullets.index(bullet))
@@ -136,6 +136,9 @@ while run_main:
                     bullet.y += bullet.speed_y
                 else:
                     bot_bullets.pop(bot_bullets.index(bullet))
+                for p in platforms:
+                    if (bullet.x < p.x + 60 and bullet.x > p.x) and (bullet.y < p.y + 60 and bullet.y > p.y):
+                        bot_bullets.pop(bot_bullets.index(bullet))
                 if bullet.is_hit_bot(player1):
                     bot_bullets.pop(bot_bullets.index(bullet))
                     player1.hp -= 1
@@ -146,35 +149,32 @@ while run_main:
             for bot in addbot:
                 bot.update(window_width, window_height, player1, platforms)
 
-            # Player's bullets
-            if keys[pygame.K_ESCAPE]:
-                temp = game.menu(screen, win)
-                if game_flag != temp:
+            "# Keys processing #"
+            if keys[pygame.K_ESCAPE]:                              # Exit yo menu
+                tmp = game.menu(screen, win)
+                if game_flag != tmp:
                     player1.x = 100
                     player1.y = 100
-                    game_flag = temp
-                    run = False
+                    game_flag  = tmp
                 run = False
-
-            if keys[pygame.K_SPACE]:
+            elif keys[pygame.K_SPACE]:                             # Player's bullets
                 if len(player1_bullets) < 1:
                     player1_bullets.append(plr.Bullet(player1))
 
-            "# Bot's bullets processing #"
+            "# Bot's bullets #"
             for i in range(0, len(addbot)):
                 if addbot[i].x == player1.x or addbot[i].y == player1.y:
-                    if len(bot_bullets) < len(addbot):
-                        bot.speed = 0
-                        bot_bullets.append(boobs.Bullet_Bot(bot))
+                    addbot[i].speed = 0
+                    bot_bullets.append(boobs.BulletBot(bot))
 
-            # Bullets drawing
+            "# Bullets drawing #"
             for bullet in bot_bullets:
                 bullet.draw(win)
 
             for bullet in player1_bullets:
                 bullet.draw(win)
 
-            # Killing checking
+            "# Kills checking #"
             addbot = killed_bot(addbot)
             tmp = killed_player(player1, screen, win)
             if tmp:
@@ -241,14 +241,12 @@ while run_main:
             player1.update(keys, window_width, window_height, player2, None, 0)
             player2.update(keys, window_width, window_height, player1, None, 1)
             if keys[pygame.K_ESCAPE]:
-                temp = game.menu(screen, win)
-                if game_flag != temp:
+                tmp = game.menu(screen, win)
+                if game_flag != tmp:
                     player1.x = 100
                     player1.y = 100
-                    player2.x = window_width - 150
-                    player2.y = window_height - 150
-                    game_flag = temp
-                    run = False
+                    game_flag  = tmp
+                run = False
 
             "# Shooting processing #"
             if keys[pygame.K_SPACE]:

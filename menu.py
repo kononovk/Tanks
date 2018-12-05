@@ -8,7 +8,7 @@
 # ----------------------------------------------------
 import pygame
 from player.player import Player, Bullet
-from bot.bot import Bot, Bullet_Bot
+from bot.bot import Bot, BulletBot
 
 tank_list = [r'textures\tanks\tank_up.png', r'textures\tanks\tank_right.png',
              r'textures\tanks\tank_down.png', r'textures\tanks\tank_left.png']
