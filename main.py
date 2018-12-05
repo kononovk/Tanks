@@ -1,5 +1,5 @@
 # ----------------------------------------------------
-# Program by Nickolay Kononov
+# Program by Nickolay Kononov and Kirill Obukhov
 #
 # Version: 2.0
 # Last Update: 29.11.2018
@@ -55,7 +55,7 @@ PLATFORM_COLOR = "#FF6262"
 
 addbot = []
 
-"---# The beginning of rendering cycle with 2 players #---"
+"---# The beginning of rendering cycle #---"
 run, run_main = True, True
 
 while run_main:
@@ -64,8 +64,8 @@ while run_main:
         addbot = []
         addbot.append(boobs.Bot(tank_list, 1))
         bot_bullets = []
-        entities = pygame.sprite.Group()  # Все объекты
-        platforms = []  # то, во что мы будем врезаться или опираться
+        entities = pygame.sprite.Group() # all objects
+        platforms = []                   # то, во что мы будем врезаться или опираться
         entities.add(player1)
         noblock = []
         level = ['---------------',
@@ -79,11 +79,11 @@ while run_main:
                  '-         -   -',
                  '-         -   -',
                  '---------------']
-        x = y = 0  # координаты
-        for row in level:  # вся строка
-            for col in row:  # каждый символ
+        x = y = 0                        # coordinates
+        for row in level:                # all string
+            for col in row:              # each character
                 if col == "-":
-                    pf = plt.Platform(x, y)
+                    pf = plt.Platform(x, y, win)
                     entities.add(pf)
                     platforms.append(pf)
                 x += PLATFORM_WIDTH  # блоки платформы ставятся на ширине блоков
@@ -146,29 +146,35 @@ while run_main:
             for bot in addbot:
                 bot.update(window_width, window_height, player1, platforms)
 
-            # Пули игрока
+            # Player's bullets
             if keys[pygame.K_ESCAPE]:
-                game_flag = game.menu(screen, win)
+                temp = game.menu(screen, win)
+                if game_flag != temp:
+                    player1.x = 100
+                    player1.y = 100
+                    game_flag = temp
+                    run = False
                 run = False
 
             if keys[pygame.K_SPACE]:
                 if len(player1_bullets) < 1:
                     player1_bullets.append(plr.Bullet(player1))
-            #Пули бота
+
+            "# Bot's bullets processing #"
             for i in range(0, len(addbot)):
                 if addbot[i].x == player1.x or addbot[i].y == player1.y:
                     if len(bot_bullets) < len(addbot):
                         bot.speed = 0
                         bot_bullets.append(boobs.Bullet_Bot(bot))
 
-            #Рисование пуль
+            # Bullets drawing
             for bullet in bot_bullets:
                 bullet.draw(win)
 
             for bullet in player1_bullets:
                 bullet.draw(win)
 
-            # Проверка на убийства
+            # Killing checking
             addbot = killed_bot(addbot)
             tmp = killed_player(player1, screen, win)
             if tmp:
@@ -177,7 +183,7 @@ while run_main:
                 player1.x, player1.y = 100, 100
                 if tmp == 2:
                     game_flag = game.menu(screen, win)
-                    run = False
+                run = False
 
     if game_flag == 2:
         player2 = plr.Player(tank_list, 1, window_width - 100 - 50, window_height - 100 - 50)
@@ -235,8 +241,14 @@ while run_main:
             player1.update(keys, window_width, window_height, player2, None, 0)
             player2.update(keys, window_width, window_height, player1, None, 1)
             if keys[pygame.K_ESCAPE]:
-                game_flag = game.menu(screen, win)
-                run = False
+                temp = game.menu(screen, win)
+                if game_flag != temp:
+                    player1.x = 100
+                    player1.y = 100
+                    player2.x = window_width - 150
+                    player2.y = window_height - 150
+                    game_flag = temp
+                    run = False
 
             "# Shooting processing #"
             if keys[pygame.K_SPACE]:
