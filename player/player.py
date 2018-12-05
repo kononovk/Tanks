@@ -91,6 +91,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
         self.collide(pl, platforms)
 
+
     "# Main collides processing function #"
     def collide(self, player2, platforms):
         "# Collides with another player processing #"
@@ -98,13 +99,17 @@ class Player(pygame.sprite.Sprite):
             if self.direction == self.prev_direction:
                 self.speed = 0
                 if self.direction == DIR_RIGHT:
-                    self.x = player2.x - player2.width
+                    if player2.direction == DIR_LEFT or player2.direction == DIR_RIGHT:
+                        self.x -= 0.1 # player2.x - player2.width
                 if self.direction == DIR_LEFT:
-                    self.x = player2.x + player2.width
+                    if player2.direction == DIR_LEFT or player2.direction == DIR_RIGHT:
+                        self.x += 0.1 # player2.x + player2.width
                 if self.direction == DIR_UP:
-                    self.y = player2.y + player2.height
+                    if player2.direction == DIR_DOWN or player2.direction == DIR_UP:
+                        self.y += 0.1 # player2.y + player2.height
                 if self.direction == DIR_DOWN:
-                    self.y = player2.y - player2.height
+                    if player2.direction == DIR_DOWN or player2.direction == DIR_UP:
+                        self.y -= 0.1 # player2.y - player2.height
             else:
                 self.speed = 1
                 self.prev_direction = self.direction
@@ -181,11 +186,8 @@ class Bullet(pygame.sprite.Sprite):
         self.speed_x = 2 * self.facing_x
         self.speed_y = 2 * self.facing_y
 
-
     def draw(self, win):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
-
-
 
     def is_hit(self, player):
         flag_x = self.x > player.x and self.x < player.x + player.width
