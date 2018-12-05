@@ -7,6 +7,7 @@ BLUE = (0, 0, 255)
 ORANGE = (255, 119, 0)
 (DIR_UP, DIR_RIGHT, DIR_DOWN, DIR_LEFT) = range(4)
 
+
 class Bot(pygame.sprite.Sprite):
     width = 60
     height = 60
@@ -116,7 +117,7 @@ def set_coord(bot):
     return [x, y]
 
 
-class Bullet_Bot(pygame.sprite.Sprite):
+class BulletBot(pygame.sprite.Sprite):
     def __init__(self, bot, radius=4, color=WHITE):
         pygame.sprite.Sprite.__init__(self)
         self.x = set_coord(bot)[0]
@@ -149,8 +150,8 @@ class Bullet_Bot(pygame.sprite.Sprite):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
     def is_hit_bot(self, bot):
-        flag_x = self.x > bot.x and self.x < bot.x + bot.width
-        flag_y = self.y > bot.y and self.y < bot.y + bot.height
+        flag_x = (self.x > bot.x) and (self.x < bot.x + bot.width)
+        flag_y = (self.y > bot.y) and (self.y < bot.y + bot.height)
         if flag_x and flag_y:
             return True
         return False
