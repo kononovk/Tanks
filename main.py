@@ -218,8 +218,9 @@ while run_main:
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
                 if bullet.is_hit(player2):
-                    player1_bullets.pop(player1_bullets.index(bullet))
                     player2.hp -= 1
+                    if len(player2_bullets) != 0:
+                        player1_bullets.pop(player1_bullets.index(bullet))
 
 
             "# Bullets processing player2 #"
@@ -233,8 +234,9 @@ while run_main:
                 else:
                     player2_bullets.pop(player2_bullets.index(bullet))
                 if bullet.is_hit(player1):
-                    player2_bullets.pop(player2_bullets.index(bullet))
                     player1.hp -= 1
+                    if len(player2_bullets) != 0:
+                        player2_bullets.pop(player2_bullets.index(bullet))
 
             "# Keys processing #"
             keys = pygame.key.get_pressed()

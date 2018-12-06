@@ -69,7 +69,7 @@ class Bot(pygame.sprite.Sprite):
         self.collide(pl, platforms)
 
     def collide(self, player1, platforms):
-        "# Collides with another player processing #"
+        # Collides with another player processing #
         if pygame.sprite.collide_rect(self, player1):
             if self.direction == self.prev_direction:
                 self.speed = 0
