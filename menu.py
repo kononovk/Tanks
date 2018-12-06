@@ -18,7 +18,6 @@ class Menu(pygame.sprite.Sprite):
     def __init__(self, paragraphs, x = 125, y = 10, FName = r'textures\battle-city.png'):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(FName)
-        self.image.blit(self.image, (0, 0), (x, y, 100, 100))
         self.rect = pygame.Rect(x, y, 100, 100)
         self.x = x
         self.y = y
@@ -75,9 +74,9 @@ class Menu(pygame.sprite.Sprite):
 
 def killed(player1, player2, screen, win):
     if player1.is_killed() or player2.is_killed():
-        par = [(310, 140, u'Try again', (250, 250, 30), (250, 30, 250), 0),
-               (310, 210, u'Main Menu', (250, 250, 30), (250, 30, 250), 1),
-               (310, 280, u'Exit', (250, 250, 30), (250, 30, 250), 2)]
+        par = [(310, 280, u'Try again', (250, 250, 30), (250, 30, 250), 0),
+               (310, 350, u'Main Menu', (250, 250, 30), (250, 30, 250), 1),
+               (310, 420, u'Exit', (250, 250, 30), (250, 30, 250), 2)]
         end_menu = Menu(par)
         game_flag = end_menu.menu(screen, win, (0, 0, 0))
         # If user have chosen 'try again' return 1
@@ -90,9 +89,9 @@ def killed(player1, player2, screen, win):
 
 def killed_player(player1, screen, win):
     if player1.is_killed():
-        par = [(310, 140, u'Try again', (250, 250, 30), (250, 30, 250), 0),
-               (310, 210, u'Main Menu', (250, 250, 30), (250, 30, 250), 1),
-               (310, 280, u'Exit', (250, 250, 30), (250, 30, 250), 2)]
+        par = [(310, 280, u'Try again', (250, 250, 30), (250, 30, 250), 0),
+               (310, 350, u'Main Menu', (250, 250, 30), (250, 30, 250), 1),
+               (310, 420, u'Exit', (250, 250, 30), (250, 30, 250), 2)]
         end_menu = Menu(par)
         game_flag = end_menu.menu(screen, win, (0, 0, 0))
         # If user have chosen 'try again' return 1

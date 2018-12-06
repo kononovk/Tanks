@@ -28,9 +28,9 @@ pygame.font.init()
 hp_font = pygame.font.Font(r"textures\Fonts.ttf", 24)
 
 "# Menu paragraphs #"
-par = [(310, 240 + 40, u'1 Player', (250, 250, 30), (250, 250, 250), 0),  # purple = (250, 30, 250)
-       (310, 310 + 40, u'2 Players', (250, 250, 30), (250, 250, 250), 1), #
-       (310, 380 + 40, u'Exit', (250, 250, 30), (250, 250, 250), 2)]      #
+par = [(310, 280, u'1 Player', (250, 250, 30), (250, 250, 250), 0),  # purple = (250, 30, 250)
+       (310, 350, u'2 Players', (250, 250, 30), (250, 250, 250), 1), #
+       (310, 420, u'Exit', (250, 250, 30), (250, 250, 250), 2)]      #
 
 game = Menu(par)
 game_flag = game.menu(screen, win)
