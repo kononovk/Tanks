@@ -10,8 +10,9 @@ import pygame
 from player.player import Player, Bullet
 from bot.bot import Bot, BulletBot
 
-tank_list = [r'textures\tanks\tank_up.png', r'textures\tanks\tank_right.png',
-             r'textures\tanks\tank_down.png', r'textures\tanks\tank_left.png']
+
+tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
+             r'textures\tanks\tank2_down.png', r'textures\tanks\tank2_left.png']
 
 # Main menu class
 class Menu(pygame.sprite.Sprite):
@@ -102,11 +103,5 @@ def killed_player(player1, screen, win):
             return 2
     return False
 
-def killed_bot(addbot):
-    for i in range(0,len(addbot)):
-        if addbot[i].is_killed():
-            addbot.pop(i)
-            addbot.append(Bot(tank_list, 1))
-            addbot.append(Bot(tank_list, 1))
-    return addbot
+
 

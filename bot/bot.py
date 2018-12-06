@@ -38,30 +38,26 @@ class Bot(pygame.sprite.Sprite):
         win.blit(self.image, self.rect)
 
     def update(self, window_width, window_height, pl, platforms):
-        self.direction = randint(0, 3)
-        if self.direction == DIR_LEFT:
-            if self.x > 0 and self.rect.collidelist(platforms) == -1:
+        if pl.x != self.x and pl.y != self.y:
+            if (self.rect.collidelist(platforms) == -1) and (self.prev_direction != DIR_LEFT):
                 self.prev_direction = self.direction
                 self.image = self.image_left
                 self.direction = DIR_LEFT
                 self.x -= self.speed
-        if self.direction == DIR_RIGHT:
-            if self.x < window_width - self.width and self.rect.collidelist(platforms) != -1:
+            if (self.rect.collidelist(platforms) == -1) and (self.prev_direction != DIR_DOWN):
                 self.prev_direction = self.direction
-                self.image = self.image_right
-                self.direction = DIR_RIGHT
-                self.x += self.speed
-        if self.direction == DIR_DOWN:
-            if self.y < window_height - self.height and self.rect.collidelist(platforms) != -1:
-                self.prev_direction = self.direction
-                self.image = self.image_down
+                self.image = self.image_left
                 self.direction = DIR_DOWN
                 self.y += self.speed
-        if self.direction == DIR_UP:
-            if self.y > 30 and self.rect.collidelist(platforms) != -1:
+            if (self.rect.collidelist(platforms) == -1) and (self.prev_direction != DIR_RIGHT):
                 self.prev_direction = self.direction
-                self.image = self.image_up
-                self.direction = DIR_UP
+                self.image = self.image_left
+                self.direction = DIR_LEFT
+                self.x += self.speed
+            if (self.rect.collidelist(platforms) == -1) and (self.prev_direction != DIR_UP):
+                self.prev_direction = self.direction
+                self.image = self.image_left
+                self.direction = DIR_LEFT
                 self.y -= self.speed
         self.x_center = self.x + self.width / 2
         self.y_center = self.y + self.height / 2
