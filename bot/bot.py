@@ -21,7 +21,7 @@ class Bot(pygame.sprite.Sprite):
     height = 60
     hp = 1
 
-    def __init__(self, list_file_name, platforms, speed=1, direction=randint(0, 3)):
+    def __init__(self, list_file_name, noblock_x, noblock_y, pl, speed=1, direction=randint(0, 3)):
         pygame.sprite.Sprite.__init__(self)
         # images for different directions
         self.image_up = pygame.image.load(list_file_name[0]).convert_alpha()
@@ -36,9 +36,14 @@ class Bot(pygame.sprite.Sprite):
         self.surface.blit(self.image, (0, 0), (0, 0, self.width, self.height))
         self.rect = self.surface.get_rect()
         self.speed = speed
+        m = randint(0, len(noblock_x)-1)
+        for i in range(0, len(noblock_x)):
+            if (pl.x - 1) // 60 == noblock_x[i] and (pl.y - 1) // 60 == noblock_y[i]:
+                noblock_x[i] = noblock_x[0]
+                noblock_y[i] = noblock_y[0]
 
-        self.x = randint(61, 900 - 121)
-        self.y = randint(61, 660 - 121)
+        self.x = noblock_x[m]*60
+        self.y = noblock_y[m]*60
 
         self.x_center = self.x + self.width / 2
         self.y_center = self.y + self.height / 2

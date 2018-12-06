@@ -12,15 +12,15 @@ from bot import bot as boobs
 from block import block as plt
 from menu import Menu, killed, killed_player
 
-def killed_bot(addbot, platforms, player):
+def killed_bot(addbot, player):
     for i in range(0,len(addbot)):
         if addbot[i].is_killed(player):
             addbot.pop(i)
             bot_bullets.pop(i)
             bot_bullets.append([])
             bot_bullets.append([])
-            addbot.append(boobs.Bot(tank_list2, platforms, 0.4))
-            addbot.append(boobs.Bot(tank_list2, platforms, 0.4))
+            addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1, 0.4))
+            addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1, 0.4))
     return addbot
 
 "# Data variables #"
@@ -78,7 +78,8 @@ while run_main:
         entities = pygame.sprite.Group()        # all objects
         platforms = []                          # blocks, we will bump on
         entities.add(player1)
-        noblock = []
+        noblock_x = []
+        noblock_y = []
         level = ['---------------',
                  '-   -     -   -',
                  '-   -     -   -',
@@ -91,16 +92,19 @@ while run_main:
                  '-         -   -',
                  '---------------']
         x = y = 0                               # coordinates
-        for row in level:                       # all string
-            for col in row:                     # each symbol
-                if col == "-":
+        for i in range(0,len(level)):                       # all string
+            for j in range(0, len(level[i])):                     # each symbol
+                if level[i][j] == "-":
                     pf = plt.Platform(x, y)
                     entities.add(pf)
                     platforms.append(pf)
+                else:
+                    noblock_x.append(j)
+                    noblock_y.append(i)
                 x += PLATFORM_WIDTH             # блоки платформы ставятся на ширине блоков
             y += PLATFORM_HEIGHT                # то же самое и с высотой
             x = 0
-        addbot.append(boobs.Bot(tank_list2, platforms, 0.4))
+        addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1,0.4))
         while run:
             screen.fill((0, 0, 0))
             "# Objects rendering #"
@@ -191,11 +195,11 @@ while run_main:
                 bullet.draw(win)
 
             "# Kills checking #"
-            addbot = killed_bot(addbot, platforms, player1)
+            addbot = killed_bot(addbot, player1)
             tmp = killed_player(player1, screen, win)
             if tmp:
                 screen.fill((0, 0, 0))
-                player1.hp = 3
+                player1.hp = 1000
                 player1.x, player1.y = 100, 100
                 player1_bullets.clear()
                 bot_bullets.clear()
