@@ -1,7 +1,7 @@
 # ----------------------------------------------------
 # Program by Kirill Obuhov
 #
-# Version: 1.0
+# Version: 1.2
 # Last Update: 02.12.2018
 # File: menu.py
 # File Description: Main menu program file

@@ -8,7 +8,6 @@
 # ----------------------------------------------------
 import pygame
 from random import randint
-import time
 
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -25,7 +24,6 @@ class Bot(pygame.sprite.Sprite):
     def __init__(self, list_file_name, platforms, speed=0.4, direction=randint(0, 3)):
         pygame.sprite.Sprite.__init__(self)
         # images for different directions
-        m = 0
         self.image_up = pygame.image.load(list_file_name[0]).convert_alpha()
         self.image_right = pygame.image.load(list_file_name[1]).convert_alpha()
         self.image_down = pygame.image.load(list_file_name[2]).convert_alpha()
