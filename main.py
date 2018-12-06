@@ -12,9 +12,9 @@ from bot import bot as boobs
 from block import block as plt
 from menu import Menu, killed, killed_player
 
-def killed_bot(addbot, platforms):
+def killed_bot(addbot, platforms, player):
     for i in range(0,len(addbot)):
-        if addbot[i].is_killed():
+        if addbot[i].is_killed(player):
             addbot.pop(i)
             bot_bullets.pop(i)
             bot_bullets.append([])
@@ -31,7 +31,7 @@ window_height = 660
 pygame.display.set_icon(pygame.image.load(r"textures\icon.png"))
 pygame.init()
 win = pygame.display.set_mode((window_width, window_height))
-pygame.display.set_caption("nKOK_Shooting")
+pygame.display.set_caption("NKOK_Shooting")
 screen = pygame.Surface((window_width, window_height))
 
 "# Font creating #"
@@ -40,14 +40,16 @@ hp_font = pygame.font.Font(r"textures\Fonts.ttf", 24)
 
 "# Menu paragraphs #"
 par = [(310, 280, u'1 Player', (250, 250, 30), (250, 250, 250), 0),  # purple = (250, 30, 250)
-       (310, 350, u'2 Players', (250, 250, 30), (250, 250, 250), 1), #
-       (310, 420, u'Exit', (250, 250, 30), (250, 250, 250), 2)]      #
+       (310, 350, u'2 Players', (250, 250, 30), (250, 250, 250), 1),
+       (310, 420, u'Exit', (250, 250, 30), (250, 250, 250), 2)]
 
 game = Menu(par)
 game_flag = game.menu(screen, win)
 screen.fill((0, 0, 0))
 "# Information string #"
 info_string = pygame.Surface((window_width, 30))
+life_img = pygame.image.load(r'textures\life.png')
+life_rect = pygame.Rect((0, 0), (0, 0)) # coordinates, (width, height)
 
 "#______________________________   MAIN   LOOP      ____________________________________#"
 "<-------------------------------------------------------------------------------------->"
@@ -60,12 +62,9 @@ tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
 player1 = plr.Player(tank_list, 1, 100, 100)
 player1_bullets = []
 
-timer = pygame.time.Clock()
-
 PLATFORM_WIDTH = 60
 PLATFORM_HEIGHT = 60
 PLATFORM_COLOR = "#FF6262"
-
 
 "---# The beginning of rendering cycle with 2 players #---"
 run, run_main = True, True
@@ -152,7 +151,9 @@ while run_main:
                     elif len(bot_bullets[i]) != 0:
                         bot_bullets[i].pop(bot_bullets[i].index(bullet))
                     for p in platforms:
-                        if (bullet.x <= p.x + 60 and bullet.x >= p.x) and (bullet.y <= p.y + 60 and bullet.y >= p.y) and len(bot_bullets[i]) != 0:
+                        if (bullet.x <= p.x + 60 and bullet.x >= p.x) and \
+                           (bullet.y <= p.y + 60 and bullet.y >= p.y) and \
+                           (len(bot_bullets[i]) != 0):
                             bot_bullets[i].pop(bot_bullets[i].index(bullet))
                     if bullet.is_hit_bot(player1) and len(bot_bullets[i]) != 0:
                         bot_bullets[i].pop(bot_bullets[i].index(bullet))
@@ -190,12 +191,14 @@ while run_main:
                 bullet.draw(win)
 
             "# Kills checking #"
-            addbot = killed_bot(addbot, platforms)
+            addbot = killed_bot(addbot, platforms, player1)
             tmp = killed_player(player1, screen, win)
             if tmp:
                 screen.fill((0, 0, 0))
                 player1.hp = 3
                 player1.x, player1.y = 100, 100
+                player1_bullets.clear()
+                bot_bullets.clear()
                 if tmp == 2:
                     game_flag = game.menu(screen, win)
                 run = False
@@ -214,8 +217,9 @@ while run_main:
             info_string.fill((25, 80, 40))
 
             "# Fonts rendering #"
-            info_string.blit(hp_font.render(u"(PL1) Lives: " + str(player1.hp), 1, (255, 0, 0)), (10, 5))
-            info_string.blit(hp_font.render(u"(PL2) Lives: " + str(player2.hp), 1, (255, 0, 0)), (window_width - 250, 5))
+            win.blit(life_img, life_rect)
+            # info_string.blit(hp_font.render(u"(PL1) Lives: " + str(player1.hp), 1, (255, 0, 0)), (10, 5))
+            # info_string.blit(hp_font.render(u"(PL2) Lives: " + str(player2.hp), 1, (255, 0, 0)), (window_width - 250, 5))
 
             "# event loop #"
             for event in pygame.event.get():
@@ -234,7 +238,7 @@ while run_main:
                     player1_bullets.pop(player1_bullets.index(bullet))
                 if bullet.is_hit(player2):
                     player2.hp -= 1
-                    if len(player2_bullets) != 0:
+                    if len(player1_bullets) != 0:
                         player1_bullets.pop(player1_bullets.index(bullet))
 
 
@@ -284,10 +288,11 @@ while run_main:
                 player2.hp = 3
                 player1.x, player1.y = 100, 100
                 player2.x, player2.y = window_width - 150, window_height - 150
+                player1_bullets.clear()
+                player2_bullets.clear()
                 if tmp == 2:
                     game_flag = game.menu(screen, win)
                     run = False
-
 
 pygame.font.quit()
 pygame.quit()
