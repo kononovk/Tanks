@@ -11,17 +11,16 @@ from player import player as plr
 from bot import bot as boobs
 from block import block as plt
 from menu import Menu, killed, killed_player
-from random import randint
 
-def killed_bot(addbot):
+def killed_bot(addbot, platforms):
     for i in range(0,len(addbot)):
         if addbot[i].is_killed():
             addbot.pop(i)
             bot_bullets.pop(i)
             bot_bullets.append([])
             bot_bullets.append([])
-            addbot.append(boobs.Bot(tank_list2, 1))
-            addbot.append(boobs.Bot(tank_list2, 1))
+            addbot.append(boobs.Bot(tank_list2, platforms, 0.4))
+            addbot.append(boobs.Bot(tank_list2, platforms, 0.4))
     return addbot
 
 "# Data variables #"
@@ -56,6 +55,8 @@ info_string = pygame.Surface((window_width, 30))
 "# Creating player object #"
 tank_list = [r'textures\tanks\tank_up.png', r'textures\tanks\tank_right.png',
              r'textures\tanks\tank_down.png', r'textures\tanks\tank_left.png']
+tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
+             r'textures\tanks\tank2_down.png', r'textures\tanks\tank2_left.png']
 player1 = plr.Player(tank_list, 1, 100, 100)
 player1_bullets = []
 
@@ -73,8 +74,8 @@ while run_main:
     run = True
     if game_flag == 1:
         addbot = []
-        addbot.append(boobs.Bot(tank_list, 1))
         bot_bullets = []
+        bot_bullets.append([])
         entities = pygame.sprite.Group()        # all objects
         platforms = []                          # blocks, we will bump on
         entities.add(player1)
@@ -100,6 +101,7 @@ while run_main:
                 x += PLATFORM_WIDTH             # блоки платформы ставятся на ширине блоков
             y += PLATFORM_HEIGHT                # то же самое и с высотой
             x = 0
+        addbot.append(boobs.Bot(tank_list2, platforms, 0.4))
         while run:
             screen.fill((0, 0, 0))
             "# Objects rendering #"
@@ -131,7 +133,7 @@ while run_main:
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
                 for p in platforms:
-                    if (bullet.x <= p.x + 60 and bullet.x >= p.x) and (bullet.y <= p.y + 60 and bullet.y >= p.y):
+                    if (bullet.x <= p.x + 60 and bullet.x >= p.x) and (bullet.y <= p.y + 60 and bullet.y >= p.y) and len(player1_bullets) != 0:
                         player1_bullets.pop(player1_bullets.index(bullet))
                 for bot in addbot:
                     if bullet.is_hit(bot) and len(player1_bullets) != 0:
@@ -139,21 +141,22 @@ while run_main:
                         bot.hp -= 1
 
             "# Bullets processing bot #"
-            for bullet in bot_bullets:
-                if bullet.x in range(0, window_width + 1):
-                    bullet.x += bullet.speed_x
-                else:
-                    bot_bullets.pop(bot_bullets.index(bullet))
-                if bullet.y in range(0, window_width + 1):
-                    bullet.y += bullet.speed_y
-                else:
-                    bot_bullets.pop(bot_bullets.index(bullet))
-                for p in platforms:
-                    if (bullet.x <= p.x + 60 and bullet.x >= p.x) and (bullet.y <= p.y + 60 and bullet.y >= p.y):
-                        bot_bullets.pop(bot_bullets.index(bullet))
-                if bullet.is_hit_bot(player1):
-                    bot_bullets.pop(bot_bullets.index(bullet))
-                    player1.hp -= 1
+            for i in range(0, len(addbot)):
+                for bullet in bot_bullets[i]:
+                    if bullet.x in range(0, window_width + 1):
+                        bullet.x += bullet.speed_x
+                    else:
+                        bot_bullets[i].pop(bot_bullets[i].index(bullet))
+                    if bullet.y in range(0, window_width + 1):
+                        bullet.y += bullet.speed_y
+                    else:
+                        bot_bullets[i].pop(bot_bullets[i].index(bullet))
+                    for p in platforms:
+                        if (bullet.x <= p.x + 60 and bullet.x >= p.x) and (bullet.y <= p.y + 60 and bullet.y >= p.y) and len(bot_bullets[i]) != 0:
+                            bot_bullets[i].pop(bot_bullets[i].index(bullet))
+                    if bullet.is_hit_bot(player1) and len(bot_bullets[i]) != 0:
+                        bot_bullets[i].pop(bot_bullets[i].index(bullet))
+                        player1.hp -= 1
 
             keys = pygame.key.get_pressed()
             player1.update(keys, window_width, window_height, addbot[0], platforms, 0)
@@ -175,13 +178,13 @@ while run_main:
 
             "# Bot's bullets #"
             for i in range(0, len(addbot)):
-                if addbot[i].x == player1.x or addbot[i].y == player1.y:
-                    addbot[i].speed = 0
-                    bot_bullets.append(boobs.BulletBot(bot))
+                if (addbot[i].x == player1.x or addbot[i].y == player1.y) and len(bot_bullets[i]) < 1:
+                    bot_bullets[i].append(boobs.BulletBot(addbot[i]))
 
             "# Bullets drawing #"
-            for bullet in bot_bullets:
-                bullet.draw(win)
+            for i in range(0, len(bot_bullets)):
+                for bullet in bot_bullets[i]:
+                    bullet.draw(win)
 
             for bullet in player1_bullets:
                 bullet.draw(win)
@@ -230,9 +233,10 @@ while run_main:
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
                 if bullet.is_hit(player2):
-                    if len(player1_bullets) != 0:
-                        player1_bullets.pop(player1_bullets.index(bullet))
                     player2.hp -= 1
+                    if len(player2_bullets) != 0:
+                        player1_bullets.pop(player1_bullets.index(bullet))
+
 
             "# Bullets processing player2 #"
             for bullet in player2_bullets:
@@ -245,9 +249,9 @@ while run_main:
                 else:
                     player2_bullets.pop(player2_bullets.index(bullet))
                 if bullet.is_hit(player1):
+                    player1.hp -= 1
                     if len(player2_bullets) != 0:
                         player2_bullets.pop(player2_bullets.index(bullet))
-                    player1.hp -= 1
 
             "# Keys processing #"
             keys = pygame.key.get_pressed()
@@ -280,10 +284,6 @@ while run_main:
                 player2.hp = 3
                 player1.x, player1.y = 100, 100
                 player2.x, player2.y = window_width - 150, window_height - 150
-                player1_bullets.clear()
-                player2_bullets.clear()
-                player1.direction = randint(0, 3)
-                player2.direction = randint(0, 3)
                 if tmp == 2:
                     game_flag = game.menu(screen, win)
                     run = False
