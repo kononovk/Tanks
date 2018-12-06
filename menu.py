@@ -75,9 +75,9 @@ class Menu(pygame.sprite.Sprite):
 
 def killed(player1, player2, screen, win):
     if player1.is_killed() or player2.is_killed():
-        par = [(310, 280, u'Try again', (250, 250, 30), (250, 30, 250), 0),
-               (310, 350, u'Main Menu', (250, 250, 30), (250, 30, 250), 1),
-               (310, 420, u'Exit', (250, 250, 30), (250, 30, 250), 2)]
+        par = [(310, 280, u'Try again', (250, 250, 30), (250, 250, 250), 0),
+               (310, 350, u'Main Menu', (250, 250, 30), (250, 250, 250), 1),
+               (310, 420, u'Exit', (250, 250, 30), (250, 250, 250), 2)]
         end_menu = Menu(par)
         game_flag = end_menu.menu(screen, win, (0, 0, 0))
         # If user have chosen 'try again' return 1

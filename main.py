@@ -10,7 +10,19 @@ import pygame
 from player import player as plr
 from bot import bot as boobs
 from block import block as plt
-from menu import Menu, killed_bot, killed, killed_player
+from menu import Menu, killed, killed_player
+from random import randint
+
+def killed_bot(addbot):
+    for i in range(0,len(addbot)):
+        if addbot[i].is_killed():
+            addbot.pop(i)
+            bot_bullets.pop(i)
+            bot_bullets.append([])
+            bot_bullets.append([])
+            addbot.append(boobs.Bot(tank_list2, 1))
+            addbot.append(boobs.Bot(tank_list2, 1))
+    return addbot
 
 "# Data variables #"
 window_width = 900
@@ -218,10 +230,9 @@ while run_main:
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
                 if bullet.is_hit(player2):
-                    player2.hp -= 1
-                    if len(player2_bullets) != 0:
+                    if len(player1_bullets) != 0:
                         player1_bullets.pop(player1_bullets.index(bullet))
-
+                    player2.hp -= 1
 
             "# Bullets processing player2 #"
             for bullet in player2_bullets:
@@ -234,9 +245,9 @@ while run_main:
                 else:
                     player2_bullets.pop(player2_bullets.index(bullet))
                 if bullet.is_hit(player1):
-                    player1.hp -= 1
                     if len(player2_bullets) != 0:
                         player2_bullets.pop(player2_bullets.index(bullet))
+                    player1.hp -= 1
 
             "# Keys processing #"
             keys = pygame.key.get_pressed()
@@ -269,6 +280,10 @@ while run_main:
                 player2.hp = 3
                 player1.x, player1.y = 100, 100
                 player2.x, player2.y = window_width - 150, window_height - 150
+                player1_bullets.clear()
+                player2_bullets.clear()
+                player1.direction = randint(0, 3)
+                player2.direction = randint(0, 3)
                 if tmp == 2:
                     game_flag = game.menu(screen, win)
                     run = False
