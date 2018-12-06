@@ -22,7 +22,7 @@ class Bot(pygame.sprite.Sprite):
     height = 60
     hp = 1
 
-    def __init__(self, list_file_name, platforms, speed=0.4, direction=randint(0, 3)):
+    def __init__(self, list_file_name, platforms, speed=1, direction=randint(0, 3)):
         pygame.sprite.Sprite.__init__(self)
         # images for different directions
         m = 0
@@ -90,10 +90,10 @@ class Bot(pygame.sprite.Sprite):
                 if self.direction == DIR_DOWN:
                     self.y = player1.y - player1.height
             else:
-                self.speed = 0.1
+                self.speed = 1
                 self.prev_direction = self.direction
         else:
-            self.speed = 0.1
+            self.speed = 1
 
         if self.rect.collidelist(platforms) != -1:
             if self.direction == self.prev_direction:
@@ -108,10 +108,10 @@ class Bot(pygame.sprite.Sprite):
                     self.y = platforms[self.rect.collidelist(platforms)].y - 60
 
             else:
-                self.speed = 0.1
+                self.speed = 1
                 self.prev_direction = self.direction
         else:
-            self.speed = 0.1
+            self.speed = 1
 
     def is_killed(self):
         if self.hp > 0:

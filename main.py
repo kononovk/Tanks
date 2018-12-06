@@ -128,7 +128,7 @@ while run_main:
                     bullet.x += bullet.speed_x
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
-                if bullet.y in range(0, window_width + 1):
+                if bullet.y in range(0, window_height + 1):
                     bullet.y += bullet.speed_y
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
@@ -145,11 +145,11 @@ while run_main:
                 for bullet in bot_bullets[i]:
                     if bullet.x in range(0, window_width + 1):
                         bullet.x += bullet.speed_x
-                    else:
+                    elif len(bot_bullets[i]) != 0:
                         bot_bullets[i].pop(bot_bullets[i].index(bullet))
-                    if bullet.y in range(0, window_width + 1):
+                    if bullet.y in range(0, window_height + 1):
                         bullet.y += bullet.speed_y
-                    else:
+                    elif len(bot_bullets[i]) != 0:
                         bot_bullets[i].pop(bot_bullets[i].index(bullet))
                     for p in platforms:
                         if (bullet.x <= p.x + 60 and bullet.x >= p.x) and (bullet.y <= p.y + 60 and bullet.y >= p.y) and len(bot_bullets[i]) != 0:
@@ -178,7 +178,7 @@ while run_main:
 
             "# Bot's bullets #"
             for i in range(0, len(addbot)):
-                if (addbot[i].x == player1.x or addbot[i].y == player1.y) and len(bot_bullets[i]) < 1:
+                if ((addbot[i].x >= player1.x and addbot[i].x <= player1.x + 60) or (addbot[i].y >= player1.y  and addbot[i].y <= player1.y + 60)) and len(bot_bullets[i]) < 1:
                     bot_bullets[i].append(boobs.BulletBot(addbot[i]))
 
             "# Bullets drawing #"
