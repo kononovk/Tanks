@@ -190,7 +190,7 @@ while run_main:
                 bullet.draw(win)
 
             "# Kills checking #"
-            addbot = killed_bot(addbot)
+            addbot = killed_bot(addbot, platforms)
             tmp = killed_player(player1, screen, win)
             if tmp:
                 screen.fill((0, 0, 0))

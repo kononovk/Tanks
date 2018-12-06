@@ -1,5 +1,14 @@
+# ----------------------------------------------------
+# Program by Kirill Obuhov
+#
+# Version: 1.0
+# Last Update: 30.09.2018
+# File: player.py
+# File Description: This file contains player's class
+# ----------------------------------------------------
 import pygame
 from random import randint
+import time
 
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -11,9 +20,9 @@ ORANGE = (255, 119, 0)
 class Bot(pygame.sprite.Sprite):
     width = 60
     height = 60
-    hp = 2
+    hp = 1
 
-    def __init__(self, list_file_name, platforms, speed=1, direction=randint(0, 3)):
+    def __init__(self, list_file_name, platforms, speed=0.4, direction=randint(0, 3)):
         pygame.sprite.Sprite.__init__(self)
         # images for different directions
         self.image_up = pygame.image.load(list_file_name[0]).convert_alpha()
@@ -29,9 +38,9 @@ class Bot(pygame.sprite.Sprite):
         self.rect = self.surface.get_rect()
         self.speed = speed
 
+        self.x = randint(61, 900 - 61)
+        self.y = randint(61, 660 - 61)
 
-        self.x = randint(60, 900 - 60)
-        self.y = randint(60, 700 - 60)
         self.x_center = self.x + self.width / 2
         self.y_center = self.y + self.height / 2
 
@@ -39,27 +48,28 @@ class Bot(pygame.sprite.Sprite):
         win.blit(self.image, self.rect)
 
     def update(self, window_width, window_height, pl, platforms):
-        if pl.x != self.x and pl.y != self.y:
-            if (self.rect.collidelist(platforms) == -1) and (self.prev_direction != DIR_LEFT):
+        if pl.x != self.x or pl.y != self.y:
+            if pl.x > self.x and self.x < window_width - self.width and self.rect.collidelist(platforms) == -1:
+                self.prev_direction = self.direction
+                self.image = self.image_right
+                self.direction = DIR_RIGHT
+                self.x += self.speed
+            elif pl.y > self.y and self.y < window_height - self.height and self.rect.collidelist(platforms) == -1:
+                self.prev_direction = self.direction
+                self.image = self.image_down
+                self.direction = DIR_DOWN
+                self.y += self.speed
+            elif pl.x < self.x and self.x > 0 and self.rect.collidelist(platforms) == -1:
                 self.prev_direction = self.direction
                 self.image = self.image_left
                 self.direction = DIR_LEFT
                 self.x -= self.speed
-            if (self.rect.collidelist(platforms) == -1) and (self.prev_direction != DIR_DOWN):
+            elif pl.y < self.y and self.y > 30 and self.rect.collidelist(platforms) == -1:
                 self.prev_direction = self.direction
-                self.image = self.image_left
-                self.direction = DIR_DOWN
-                self.y += self.speed
-            if (self.rect.collidelist(platforms) == -1) and (self.prev_direction != DIR_RIGHT):
-                self.prev_direction = self.direction
-                self.image = self.image_left
-                self.direction = DIR_LEFT
-                self.x += self.speed
-            if (self.rect.collidelist(platforms) == -1) and (self.prev_direction != DIR_UP):
-                self.prev_direction = self.direction
-                self.image = self.image_left
-                self.direction = DIR_LEFT
+                self.image = self.image_up
+                self.direction = DIR_UP
                 self.y -= self.speed
+
         self.x_center = self.x + self.width / 2
         self.y_center = self.y + self.height / 2
         self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
@@ -79,10 +89,10 @@ class Bot(pygame.sprite.Sprite):
                 if self.direction == DIR_DOWN:
                     self.y = player1.y - player1.height
             else:
-                self.speed = 1
+                self.speed = 0.1
                 self.prev_direction = self.direction
         else:
-            self.speed = 1
+            self.speed = 0.1
 
         if self.rect.collidelist(platforms) != -1:
             if self.direction == self.prev_direction:
@@ -97,10 +107,10 @@ class Bot(pygame.sprite.Sprite):
                     self.y = platforms[self.rect.collidelist(platforms)].y - 60
 
             else:
-                self.speed = 1
+                self.speed = 0.1
                 self.prev_direction = self.direction
         else:
-            self.speed = 1
+            self.speed = 0.1
 
     def is_killed(self):
         if self.hp > 0:
@@ -154,7 +164,7 @@ class BulletBot(pygame.sprite.Sprite):
         self.speed_y = 2 * self.facing_y
 
     def draw(self, win):
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+        pygame.draw.circle(win, self.color, (int(self.x), int(self.y)), self.radius)
 
     def is_hit_bot(self, bot):
         flag_x = (self.x > bot.x) and (self.x < bot.x + bot.width)
