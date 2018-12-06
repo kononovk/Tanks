@@ -39,9 +39,9 @@ pygame.font.init()
 hp_font = pygame.font.Font(r"textures\Fonts.ttf", 24)
 
 "# Menu paragraphs #"
-par = [(310, 240 + 40, u'1 Player', (250, 250, 30), (250, 250, 250), 0),  # purple = (250, 30, 250)
-       (310, 310 + 40, u'2 Players', (250, 250, 30), (250, 250, 250), 1), #
-       (310, 380 + 40, u'Exit', (250, 250, 30), (250, 250, 250), 2)]      #
+par = [(310, 280, u'1 Player', (250, 250, 30), (250, 250, 250), 0),  # purple = (250, 30, 250)
+       (310, 350, u'2 Players', (250, 250, 30), (250, 250, 250), 1), #
+       (310, 420, u'Exit', (250, 250, 30), (250, 250, 250), 2)]      #
 
 game = Menu(par)
 game_flag = game.menu(screen, win)
@@ -233,8 +233,9 @@ while run_main:
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
                 if bullet.is_hit(player2):
-                    player1_bullets.pop(player1_bullets.index(bullet))
                     player2.hp -= 1
+                    if len(player2_bullets) != 0:
+                        player1_bullets.pop(player1_bullets.index(bullet))
 
 
             "# Bullets processing player2 #"
@@ -248,8 +249,9 @@ while run_main:
                 else:
                     player2_bullets.pop(player2_bullets.index(bullet))
                 if bullet.is_hit(player1):
-                    player2_bullets.pop(player2_bullets.index(bullet))
                     player1.hp -= 1
+                    if len(player2_bullets) != 0:
+                        player2_bullets.pop(player2_bullets.index(bullet))
 
             "# Keys processing #"
             keys = pygame.key.get_pressed()
