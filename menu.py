@@ -16,7 +16,7 @@ tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
 
 # Main menu class
 class Menu(pygame.sprite.Sprite):
-    def __init__(self, paragraphs, x = 125, y = 10, FName = r'textures\battle-city.png'):
+    def __init__(self, paragraphs, FName = r'textures\battle-city.png', x = 125, y = 10):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(FName)
         self.rect = pygame.Rect(x, y, 100, 100)
@@ -78,7 +78,7 @@ def killed(player1, player2, screen, win):
         par = [(310, 280, u'Try again', (250, 250, 30), (250, 250, 250), 0),
                (310, 350, u'Main Menu', (250, 250, 30), (250, 250, 250), 1),
                (310, 420, u'Exit', (250, 250, 30), (250, 250, 250), 2)]
-        end_menu = Menu(par)
+        end_menu = Menu(par, r'textures\game-over.png', 260, 70)
         game_flag = end_menu.menu(screen, win, (0, 0, 0))
         # If user have chosen 'try again' return 1
         if game_flag == 1:
@@ -90,10 +90,21 @@ def killed(player1, player2, screen, win):
 
 def killed_player(player1, screen, win):
     if player1.is_killed():
-        par = [(310, 280, u'Try again', (250, 250, 30), (250, 30, 250), 0),
-               (310, 350, u'Main Menu', (250, 250, 30), (250, 30, 250), 1),
-               (310, 420, u'Exit', (250, 250, 30), (250, 30, 250), 2)]
-        end_menu = Menu(par)
+        "# Writing new record in file #"
+        f = open("record.txt", 'r')
+        last_rec = f.read(1)
+        if player1.points > int(last_rec):
+            last_rec = player1.points
+        f.close()
+        open("record.txt", "w").close()
+        f = open("record.txt", 'w')
+        f.write(str(last_rec))
+        player1.points = 0
+
+        par = [(310, 280, u'Try again', (250, 250, 30), (250, 250, 250), 0),
+               (310, 350, u'Main Menu', (250, 250, 30), (250, 250, 250), 1),
+               (310, 420, u'Exit', (250, 250, 30), (250, 250, 250), 2)]
+        end_menu = Menu(par, r'textures\game-over.png', 260, 70)
         game_flag = end_menu.menu(screen, win, (0, 0, 0))
         # If user have chosen 'try again' return 1
         if game_flag == 1:

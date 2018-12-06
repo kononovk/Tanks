@@ -113,9 +113,10 @@ class Bot(pygame.sprite.Sprite):
         else:
             self.speed = 0.1
 
-    def is_killed(self):
+    def is_killed(self, player):
         if self.hp > 0:
             return False
+        player.points += 1
         return True
 
 

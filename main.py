@@ -12,9 +12,9 @@ from bot import bot as boobs
 from block import block as plt
 from menu import Menu, killed, killed_player
 
-def killed_bot(addbot, platforms):
+def killed_bot(addbot, platforms, player):
     for i in range(0,len(addbot)):
-        if addbot[i].is_killed():
+        if addbot[i].is_killed(player):
             addbot.pop(i)
             bot_bullets.pop(i)
             bot_bullets.append([])
@@ -190,7 +190,7 @@ while run_main:
                 bullet.draw(win)
 
             "# Kills checking #"
-            addbot = killed_bot(addbot, platforms)
+            addbot = killed_bot(addbot, platforms, player1)
             tmp = killed_player(player1, screen, win)
             if tmp:
                 screen.fill((0, 0, 0))
@@ -284,6 +284,7 @@ while run_main:
                 player2.hp = 3
                 player1.x, player1.y = 100, 100
                 player2.x, player2.y = window_width - 150, window_height - 150
+
                 if tmp == 2:
                     game_flag = game.menu(screen, win)
                     run = False
