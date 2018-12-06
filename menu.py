@@ -14,8 +14,14 @@ tank_list = [r'textures\tanks\tank_up.png', r'textures\tanks\tank_right.png',
              r'textures\tanks\tank_down.png', r'textures\tanks\tank_left.png']
 
 # Main menu class
-class Menu:
-    def __init__(self, paragraphs):
+class Menu(pygame.sprite.Sprite):
+    def __init__(self, paragraphs, x = 125, y = 10, FName = r'textures\battle-city.png'):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(FName)
+        self.image.blit(self.image, (0, 0), (x, y, 100, 100))
+        self.rect = pygame.Rect(x, y, 100, 100)
+        self.x = x
+        self.y = y
         self.paragraphs = paragraphs
 
     def render(self, host, font, num_par):
@@ -24,9 +30,10 @@ class Menu:
                 host.blit(font.render(i[2], 1, i[3]), (i[0], i[1]))
             else:
                 host.blit(font.render(i[2], 1, i[4]), (i[0], i[1]))
+            host.blit(self.image, self.rect)
 
     "# Menu starting function#"
-    def menu(self, screen, win, menu_color=(0, 100, 200)):
+    def menu(self, screen, win, menu_color=(0, 0, 0)): # 0, 100, 200
         done = True
         font_menu = pygame.font.Font(r"textures\Fonts.ttf", 50)
         prg = 0
@@ -48,7 +55,7 @@ class Menu:
                         prg -= 1
                     if e.key == pygame.K_DOWN and prg < len(self.paragraphs) - 1:
                         prg += 1
-                    if e.key == pygame.K_RETURN or e.key == pygame.K_KP_ENTER:
+                    if e.key == pygame.K_RETURN:
                         if prg == 0:
                             return 1
                         elif prg == 1:

@@ -28,9 +28,9 @@ pygame.font.init()
 hp_font = pygame.font.Font(r"textures\Fonts.ttf", 24)
 
 "# Menu paragraphs #"
-par = [(310, 140, u'1 Player', (250, 250, 30), (250, 30, 250), 0),
-       (310, 210, u'2 Players', (250, 250, 30), (250, 30, 250), 1),
-       (310, 280, u'Exit', (250, 250, 30), (250, 30, 250), 2)]
+par = [(310, 240 + 40, u'1 Player', (250, 250, 30), (250, 250, 250), 0),  # purple = (250, 30, 250)
+       (310, 310 + 40, u'2 Players', (250, 250, 30), (250, 250, 250), 1), #
+       (310, 380 + 40, u'Exit', (250, 250, 30), (250, 250, 250), 2)]      #
 
 game = Menu(par)
 game_flag = game.menu(screen, win)
@@ -252,7 +252,7 @@ while run_main:
             if keys[pygame.K_SPACE]:
                 if len(player1_bullets) < 1:
                     player1_bullets.append(plr.Bullet(player1))
-            if keys[pygame.K_KP_ENTER] or keys[pygame.K_RETURN]:
+            if keys[pygame.K_KP_ENTER]:
                 if len(player2_bullets) < 1:
                     player2_bullets.append(plr.Bullet(player2))
             for bullet in player1_bullets:

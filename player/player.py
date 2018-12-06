@@ -187,7 +187,7 @@ class Bullet(pygame.sprite.Sprite):
         self.speed_y = 2 * self.facing_y
 
     def draw(self, win):
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+        pygame.draw.circle(win, self.color, (int(self.x), int(self.y)), self.radius)
 
     def is_hit(self, player):
         flag_x = self.x > player.x and self.x < player.x + player.width
