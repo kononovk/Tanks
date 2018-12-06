@@ -44,7 +44,7 @@ info_string = pygame.Surface((window_width, 30))
 "# Creating player object #"
 tank_list = [r'textures\tanks\tank_up.png', r'textures\tanks\tank_right.png',
              r'textures\tanks\tank_down.png', r'textures\tanks\tank_left.png']
-player1 = plr.Player(tank_list, 1, 100, 100)
+player1 = plr.Player(tank_list, 1, 100, 100, 1)
 player1_bullets = []
 
 timer = pygame.time.Clock()
@@ -186,7 +186,7 @@ while run_main:
                 run = False
 
     if game_flag == 2:
-        player2 = plr.Player(tank_list, 1, window_width - 100 - 50, window_height - 100 - 50)
+        player2 = plr.Player(tank_list, 1, window_width - 100 - 50, window_height - 100 - 50, 2)
         player2_bullets = []
         while run:
             screen.fill((0, 0, 0))

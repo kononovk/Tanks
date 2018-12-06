@@ -20,7 +20,8 @@ class Player(pygame.sprite.Sprite):
     height = 60
     hp = 3
 
-    def __init__(self, list_file_name, speed, x=0, y=0, direction=randint(0, 3)):
+    def __init__(self, list_file_name, speed, x=0, y=0, direction=randint(0, 3), id=1):
+        self.id = id
         pygame.sprite.Sprite.__init__(self)
         # images for different directions
         self.image_up = pygame.image.load(list_file_name[0]).convert_alpha()
@@ -89,13 +90,16 @@ class Player(pygame.sprite.Sprite):
         self.x_center = self.x + self.width / 2
         self.y_center = self.y + self.height / 2
         self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
-        self.collide(pl, platforms)
-
+        self.collide(pl, platforms, keys)
 
     "# Main collides processing function #"
-    def collide(self, player2, platforms):
+    def collide(self, player2, platforms, keys):
         "# Collides with another player processing #"
-        if pygame.sprite.collide_rect(self, player2):
+        if self.id == 1:
+            is_in_move = (keys[pygame.K_d] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_w])
+        elif self.id == 2:
+            is_in_move = (keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_LEFT] or keys[pygame.K_RIGHT])
+        if pygame.sprite.collide_rect(self, player2) and is_in_move:
             if self.direction == self.prev_direction:
                 self.speed = 0
                 if self.direction == DIR_RIGHT:
