@@ -39,8 +39,12 @@ class Bot(pygame.sprite.Sprite):
         m = randint(0, len(noblock_x)-1)
         for i in range(0, len(noblock_x)):
             if (pl.x - 1) // 60 == noblock_x[i] and (pl.y - 1) // 60 == noblock_y[i]:
-                noblock_x[i] = noblock_x[0]
-                noblock_y[i] = noblock_y[0]
+                if i <= (len(noblock_x) // 2):
+                    noblock_x[i] = noblock_x[i + (len(noblock_x) // 4)]
+                    noblock_y[i] = noblock_y[i + (len(noblock_y) // 4)]
+                else:
+                    noblock_x[i] = noblock_x[i - (len(noblock_x) // 4)]
+                    noblock_y[i] = noblock_y[i - (len(noblock_y) // 4)]
 
         self.x = noblock_x[m]*60
         self.y = noblock_y[m]*60
