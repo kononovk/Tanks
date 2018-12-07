@@ -86,19 +86,22 @@ class Bot(pygame.sprite.Sprite):
     def collide(self, player1, platforms):
         # Collides with another player processing #
         if pygame.sprite.collide_rect(self, player1):
-            if self.direction == self.prev_direction:
-                self.speed = 0
-                if self.direction == DIR_RIGHT:
-                    self.x = player1.x - player1.width
-                if self.direction == DIR_LEFT:
-                    self.x = player1.x + player1.width
-                if self.direction == DIR_UP:
-                    self.y = player1.y + player1.height
-                if self.direction == DIR_DOWN:
-                    self.y = player1.y - player1.height
-            else:
+            flag = False
+            for i in range(0, 60):
+                if player1.rect.collidepoint(self.x + i,self.y) and self.direction == DIR_UP:
+                    self.speed = 0
+                    flag = True
+                elif player1.rect.collidepoint(self.x, self.y + i) and self.direction == DIR_LEFT:
+                    self.speed = 0
+                    flag = True
+                elif player1.rect.collidepoint(self.x + i, self.y + 60) and self.direction == DIR_DOWN:
+                    self.speed = 0
+                    flag = True
+                elif player1.rect.collidepoint(self.x + 60, self.y + i) and self.direction == DIR_RIGHT:
+                    self.speed = 0
+                    flag = True
+            if not flag:
                 self.speed = 1
-                self.prev_direction = self.direction
         else:
             self.speed = 1
 

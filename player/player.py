@@ -18,7 +18,7 @@ ORANGE = (255, 119, 0)
 class Player(pygame.sprite.Sprite):
     width = 60
     height = 60
-    hp = 3
+    hp = 1000
     points = 0
 
     def __init__(self, list_file_name, speed, id, x=0, y=0, direction=randint(0, 3)):
@@ -96,30 +96,26 @@ class Player(pygame.sprite.Sprite):
     "# Main collides processing function #"
     def collide(self, player2, platforms, keys):
         "# Collides with another player processing #"
-        if self.id == 1:
-            is_in_move = (keys[pygame.K_d] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_w])
-        elif self.id == 2:
-            is_in_move = (keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_LEFT] or keys[pygame.K_RIGHT])
-        if pygame.sprite.collide_rect(self, player2) and is_in_move:
-            if self.direction == self.prev_direction:
-                self.speed = 0
-                if self.direction == DIR_RIGHT:
-                    if player2.direction == DIR_LEFT or player2.direction == DIR_RIGHT:
-                        self.x -= 0.1 # player2.x - player2.width
-                if self.direction == DIR_LEFT:
-                    if player2.direction == DIR_LEFT or player2.direction == DIR_RIGHT:
-                        self.x += 0.1 # player2.x + player2.width
-                if self.direction == DIR_UP:
-                    if player2.direction == DIR_DOWN or player2.direction == DIR_UP:
-                        self.y += 0.1 # player2.y + player2.height
-                if self.direction == DIR_DOWN:
-                    if player2.direction == DIR_DOWN or player2.direction == DIR_UP:
-                        self.y -= 0.1 # player2.y - player2.height
-            else:
+        if pygame.sprite.collide_rect(self, player2):
+            flag = False
+            for i in range(0, player2.width + 1):
+                if player2.rect.collidepoint(self.x + i,self.y) and self.direction == DIR_UP:
+                    self.speed = 0
+                    flag = True
+                elif player2.rect.collidepoint(self.x,self.y + i) and self.direction == DIR_LEFT:
+                    self.speed = 0
+                    flag = True
+                elif player2.rect.collidepoint(self.x + i,self.y + 60) and self.direction == DIR_DOWN:
+                    self.speed = 0
+                    flag = True
+                elif player2.rect.collidepoint(self.x + 60,self.y + i) and self.direction == DIR_RIGHT:
+                    self.speed = 0
+                    flag = True
+            if not flag:
                 self.speed = 1
-                self.prev_direction = self.direction
         else:
             self.speed = 1
+
 
         "# Collides with platforms processing #"
         if platforms != None:

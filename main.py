@@ -57,7 +57,8 @@ info_string = pygame.Surface((window_width, 30))
 "<-------------------------------------------------------------------------------------->"
 
 "# Creating player object #"
-tank_list = [r'textures\tanks\tank_up.png', r'textures\tanks\tank_right.png',
+tank_list = [r'textures\tanks\tank_'
+             r'up.png', r'textures\tanks\tank_right.png',
              r'textures\tanks\tank_down.png', r'textures\tanks\tank_left.png']
 tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
              r'textures\tanks\tank2_down.png', r'textures\tanks\tank2_left.png']
@@ -214,7 +215,7 @@ while run_main:
             tmp = killed_player(player1, screen, win)
             if tmp:
                 screen.fill((0, 0, 0))
-                player1.hp = 3
+                player1.hp = 1000
                 player1.x, player1.y = 100, 100
                 player1_bullets.clear()
                 bot_bullets.clear()
@@ -281,7 +282,7 @@ while run_main:
                     if len(player2_bullets) != 0:
                         player2_bullets.pop(player2_bullets.index(bullet))
                     if len(life1_rect) != 0:
-                        life1_rect.pop(2 - player2.hp)
+                        life1_rect.pop(2 - player1.hp)
 
             "# Keys processing #"
             keys = pygame.key.get_pressed()
