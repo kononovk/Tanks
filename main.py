@@ -48,7 +48,7 @@ game_flag = game.menu(screen, win)
 screen.fill((0, 0, 0))
 "# Information string #"
 info_string = pygame.Surface((window_width, 30))
-life_img = pygame.image.load(r'textures\life.png')
+life_img = pygame.image.load(r'textures\life1.png')
 life_rect = pygame.Rect((0, 0), (0, 0)) # coordinates, (width, height)
 
 "#______________________________   MAIN   LOOP      ____________________________________#"
@@ -199,7 +199,7 @@ while run_main:
             tmp = killed_player(player1, screen, win)
             if tmp:
                 screen.fill((0, 0, 0))
-                player1.hp = 1000
+                player1.hp = 3
                 player1.x, player1.y = 100, 100
                 player1_bullets.clear()
                 bot_bullets.clear()
