@@ -67,8 +67,8 @@ tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
 player1 = plr.Player(tank_list, 1, 1, 100, 100)
 player1_bullets = []
 
-PLATFORM_WIDTH = 60
-PLATFORM_HEIGHT = 60
+PLATFORM_WIDTH = 30
+PLATFORM_HEIGHT = 30
 PLATFORM_COLOR = "#FF6262"
 
 "# Lifes textures images #"
@@ -238,7 +238,7 @@ while run_main:
             tmp = killed_player(player1, screen, win)
             if tmp:
                 screen.fill((0, 0, 0))
-                player1.hp = 1000
+                player1.hp = 3
                 player1.x, player1.y = 100, 100
                 player1_bullets.clear()
                 bot_bullets.clear()
