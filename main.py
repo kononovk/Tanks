@@ -159,10 +159,10 @@ while run_main:
                 win.blit(life1_img, i)
             "# Record and points rendering #"
             if last_rec > player1.points:
-                info_string.blit(hp_font.render(u"Record: " + str(last_rec), 1, (255, 0, 0)), (window_width//2 - 80, 5))
-                info_string.blit(hp_font.render(u"Points: " + str(player1.points), 1, (255, 0, 0)), (750, 5))
+                info_string.blit(hp_font.render(u"Record: " + str(last_rec), 1, (255, 215, 0)), (window_width//2 - 80, 5))
+                info_string.blit(hp_font.render(u"Points: " + str(player1.points), 1, (255, 215, 0)), (750, 5))
             else:
-                info_string.blit(hp_font.render(u"Record: " + str(player1.points), 1, (255, 0, 0)), (window_width//2 - 80, 5))
+                info_string.blit(hp_font.render(u"Record: " + str(player1.points), 1, (255, 215, 0)), (window_width//2 - 80, 5))
 
 
             "# event loop #"
@@ -208,7 +208,8 @@ while run_main:
                     if bullet.is_hit_bot(player1) and len(bot_bullets[i]) != 0:
                         bot_bullets[i].pop(bot_bullets[i].index(bullet))
                         player1.hp -= 1
-                        life1_rect.pop(player1.hp)
+                        if len(life1_rect) > 0:
+                            life1_rect.pop(player1.hp)
 
             keys = pygame.key.get_pressed()
             player1.update(keys, window_width, window_height, addbot[0], platforms, 0)
@@ -268,7 +269,7 @@ while run_main:
             player2.draw(win)
             pygame.display.update()
             win.blit(info_string, (0, 0))
-            win.blit(screen, (0, 30))
+            win.blit(screen, (0, 60))
             info_string.fill((25, 80, 40))
 
             "# Lifes rendering #"

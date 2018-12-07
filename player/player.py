@@ -1,8 +1,8 @@
 # ----------------------------------------------------
-# Program by Nickolay Kononov
+# Program by Nickolay Kononov and Kirill Obukhov
 #
 # Version: 1.0
-# Last Update: 30.09.2018
+# Last Update: 7.12.2018
 # File: player.py
 # File Description: This file contains player's class
 # ----------------------------------------------------
@@ -63,7 +63,7 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.image_down
                     self.direction = DIR_DOWN
                     self.y += self.speed
-                elif keys[pygame.K_w] and self.y > 30:
+                elif keys[pygame.K_w] and self.y > 60:
                     self.prev_direction = self.direction
                     self.image = self.image_up
                     self.direction = DIR_UP
@@ -84,7 +84,7 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.image_down
                     self.direction = DIR_DOWN
                     self.y += self.speed
-                elif (keys[pygame.K_UP]) and self.y > 30:
+                elif (keys[pygame.K_UP]) and self.y > 60:
                     self.prev_direction = self.direction
                     self.image = self.image_up
                     self.direction = DIR_UP
@@ -189,7 +189,8 @@ class Bullet(pygame.sprite.Sprite):
         self.speed_y = 2 * self.facing_y
 
     def draw(self, win):
-        pygame.draw.circle(win, self.color, (int(self.x), int(self.y)), self.radius)
+        if self.y > 60:
+            pygame.draw.circle(win, self.color, (int(self.x), int(self.y)), self.radius)
 
     def is_hit(self, player):
         flag_x = self.x > player.x and self.x < player.x + player.width
