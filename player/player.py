@@ -89,9 +89,9 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.image_up
                     self.direction = DIR_UP
                     self.y -= self.speed
-        self.x_center = self.x + self.width / 2
-        self.y_center = self.y + self.height / 2
-        self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
+            self.x_center = self.x + self.width / 2
+            self.y_center = self.y + self.height / 2
+            self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
         self.collide(pl, platforms)
 
     "# Main collides processing function #"

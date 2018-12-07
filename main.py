@@ -202,7 +202,7 @@ while run_main:
             player1.update(keys, window_width, window_height, addbot[0], platforms, 0)
 
             for i in range(1, len(addbot)):
-                player1.update(keys, window_width, window_height, addbot[0], platforms, 0, False)
+                player1.update(keys, window_width, window_height, addbot[i], platforms, 0, False)
 
             for bot in addbot:
                 bot.update(window_width, window_height, player1, platforms)
