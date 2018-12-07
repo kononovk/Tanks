@@ -95,11 +95,13 @@ class Player(pygame.sprite.Sprite):
 
     "# Main collides processing function #"
     def collide(self, player2, platforms, keys):
+        is_in_move = False
         "# Collides with another player processing #"
-        if self.id == 1:
+        if player2.id == 1:
             is_in_move = (keys[pygame.K_d] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_w])
-        elif self.id == 2:
+        elif player2.id == 2:
             is_in_move = (keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_LEFT] or keys[pygame.K_RIGHT])
+
         if pygame.sprite.collide_rect(self, player2) and is_in_move:
             if self.direction == self.prev_direction:
                 self.speed = 0
