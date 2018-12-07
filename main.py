@@ -23,6 +23,9 @@ def killed_bot(addbot, player):
             addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1, 0.4))
     return addbot
 
+def hp_render(player1, player2):
+    pass
+
 "# Data variables #"
 window_width = 900
 window_height = 660
@@ -46,12 +49,9 @@ par = [(310, 280, u'1 Player', (250, 250, 30), (250, 250, 250), 0),  # purple = 
 game = Menu(par)
 game_flag = game.menu(screen, win)
 screen.fill((0, 0, 0))
+
 "# Information string #"
 info_string = pygame.Surface((window_width, 30))
-life1_img = pygame.image.load(r'textures\life1.png')
-life1_rect = pygame.Rect((0, 0), (0, 0)) # coordinates, (width, height)
-life2_img = pygame.image.load((r'textures\life2.png'))
-life2_rect = pygame.Rect((870, 0), (0, 0))
 
 "#______________________________   MAIN   LOOP      ____________________________________#"
 "<-------------------------------------------------------------------------------------->"
@@ -68,10 +68,22 @@ PLATFORM_WIDTH = 60
 PLATFORM_HEIGHT = 60
 PLATFORM_COLOR = "#FF6262"
 
+"# Lifes textures images #"
+life1_img = pygame.image.load(r'textures\life1.png')
+life2_img = pygame.image.load((r'textures\life2.png'))
+
 "---# The beginning of rendering cycle with 2 players #---"
 run, run_main = True, True
 
 while run_main:
+    "# List with life's rendering coordinates #"
+    life1_rect = [pygame.Rect((0, 0), (0, 0)),
+                  pygame.Rect((30, 0), (0, 0)),
+                  pygame.Rect((60, 0), (0, 0))]  # coordinates, (width, height)
+    life2_rect = [pygame.Rect((window_width - 30, 0), (0, 0)),
+                  pygame.Rect((window_width - 60, 0), (0, 0)),
+                  pygame.Rect((window_width - 90, 0), (0, 0))]
+
     run = True
     if game_flag == 1:
         addbot = []
@@ -185,7 +197,8 @@ while run_main:
 
             "# Bot's bullets #"
             for i in range(0, len(addbot)):
-                if ((addbot[i].x >= player1.x and addbot[i].x <= player1.x + 60) or (addbot[i].y >= player1.y  and addbot[i].y <= player1.y + 60)) and len(bot_bullets[i]) < 1:
+                if ((addbot[i].x >= player1.x and addbot[i].x <= player1.x + 60) or
+                    (addbot[i].y >= player1.y  and addbot[i].y <= player1.y + 60)) and len(bot_bullets[i]) < 1:
                     bot_bullets[i].append(boobs.BulletBot(addbot[i]))
 
             "# Bullets drawing #"
@@ -222,9 +235,11 @@ while run_main:
             win.blit(screen, (0, 30))
             info_string.fill((25, 80, 40))
 
-            "# Fonts rendering #"
-            win.blit(life1_img, life1_rect)
-            win.blit(life2_img, life2_rect)
+            "# Lifes rendering #"
+            for i in life1_rect:
+                win.blit(life1_img, i)
+            for i in life2_rect:
+                win.blit(life2_img, i)
             # info_string.blit(hp_font.render(u"(PL1) Lives: " + str(player1.hp), 1, (255, 0, 0)), (10, 5))
             # info_string.blit(hp_font.render(u"(PL2) Lives: " + str(player2.hp), 1, (255, 0, 0)), (window_width - 250, 5))
 
@@ -247,6 +262,8 @@ while run_main:
                     player2.hp -= 1
                     if len(player1_bullets) != 0:
                         player1_bullets.pop(player1_bullets.index(bullet))
+                    if len(life2_rect) != 0:
+                        life2_rect.pop(player2.hp)
 
 
             "# Bullets processing player2 #"
@@ -263,6 +280,8 @@ while run_main:
                     player1.hp -= 1
                     if len(player2_bullets) != 0:
                         player2_bullets.pop(player2_bullets.index(bullet))
+                    if len(life1_rect) != 0:
+                        life1_rect.pop(2 - player2.hp)
 
             "# Keys processing #"
             keys = pygame.key.get_pressed()
@@ -300,6 +319,13 @@ while run_main:
                 if tmp == 2:
                     game_flag = game.menu(screen, win)
                     run = False
+                if tmp == 1:
+                    life1_rect = [pygame.Rect((0, 0), (0, 0)),
+                                  pygame.Rect((30, 0), (0, 0)),
+                                  pygame.Rect((60, 0), (0, 0))]  # coordinates, (width, height)
+                    life2_rect = [pygame.Rect((window_width - 30, 0), (0, 0)),
+                                  pygame.Rect((window_width - 60, 0), (0, 0)),
+                                  pygame.Rect((window_width - 90, 0), (0, 0))]
 
 pygame.font.quit()
 pygame.quit()
