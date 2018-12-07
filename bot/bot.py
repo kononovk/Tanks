@@ -37,6 +37,7 @@ class Bot(pygame.sprite.Sprite):
         self.surface.blit(self.image, (0, 0), (0, 0, self.width, self.height))
         self.rect = self.surface.get_rect()
         self.speed = speed
+        self.timer = randint(1,20)
         m = randint(0, len(noblock_x)-1)
         for i in range(0, len(noblock_x)):
             if (pl.x - 1) // 60 == noblock_x[i] and (pl.y - 1) // 60 == noblock_y[i]:
@@ -49,6 +50,7 @@ class Bot(pygame.sprite.Sprite):
 
         self.x = noblock_x[m]*60
         self.y = noblock_y[m]*60
+        self.stage = False
 
         self.x_center = self.x + self.width / 2
         self.y_center = self.y + self.height / 2
@@ -57,29 +59,29 @@ class Bot(pygame.sprite.Sprite):
         win.blit(self.image, self.rect)
 
     def update(self, window_width, window_height, pl, platforms):
-        timer = int(time.time())
-        l = randint(1,11)
-        if (pl.x != self.x or pl.y != self.y) and timer % l == 0:
-            if pl.x > self.x and self.x < window_width - self.width and self.rect.collidelist(platforms) == -1:
-                self.prev_direction = self.direction
-                self.image = self.image_right
-                self.direction = DIR_RIGHT
-                self.x += self.speed
-            elif pl.y > self.y and self.y < window_height - self.height and self.rect.collidelist(platforms) == -1:
-                self.prev_direction = self.direction
-                self.image = self.image_down
-                self.direction = DIR_DOWN
-                self.y += self.speed
-            elif pl.x < self.x and self.x > 0 and self.rect.collidelist(platforms) == -1:
-                self.prev_direction = self.direction
-                self.image = self.image_left
-                self.direction = DIR_LEFT
-                self.x -= self.speed
-            elif pl.y < self.y and self.y > 30 and self.rect.collidelist(platforms) == -1:
-                self.prev_direction = self.direction
-                self.image = self.image_up
-                self.direction = DIR_UP
-                self.y -= self.speed
+        if self.stage == True or int(time.time()) % self.timer == 0:
+            self.stage = True
+            if (pl.x != self.x or pl.y != self.y):
+                if pl.x > self.x and self.x < window_width - self.width and self.rect.collidelist(platforms) == -1:
+                    self.prev_direction = self.direction
+                    self.image = self.image_right
+                    self.direction = DIR_RIGHT
+                    self.x += self.speed
+                elif pl.y > self.y and self.y < window_height - self.height and self.rect.collidelist(platforms) == -1:
+                    self.prev_direction = self.direction
+                    self.image = self.image_down
+                    self.direction = DIR_DOWN
+                    self.y += self.speed
+                elif pl.x < self.x and self.x > 0 and self.rect.collidelist(platforms) == -1:
+                    self.prev_direction = self.direction
+                    self.image = self.image_left
+                    self.direction = DIR_LEFT
+                    self.x -= self.speed
+                elif pl.y < self.y and self.y > 30 and self.rect.collidelist(platforms) == -1:
+                    self.prev_direction = self.direction
+                    self.image = self.image_up
+                    self.direction = DIR_UP
+                    self.y -= self.speed
 
         self.x_center = self.x + self.width / 2
         self.y_center = self.y + self.height / 2
@@ -88,8 +90,8 @@ class Bot(pygame.sprite.Sprite):
 
     def collide(self, player1, platforms):
         # Collides with another player processing #
+        flag = False
         if pygame.sprite.collide_rect(self, player1):
-            flag = False
             for i in range(0, player1.width + 1):
                 if player1.rect.collidepoint(self.x + i,self.y) and self.direction == DIR_UP:
                     self.speed = 0
@@ -105,7 +107,6 @@ class Bot(pygame.sprite.Sprite):
                     flag = True
             if not flag:
                 self.speed = 1
-            print(self.speed)
         else:
             self.speed = 1
 
@@ -124,7 +125,7 @@ class Bot(pygame.sprite.Sprite):
             else:
                 self.speed = 1
                 self.prev_direction = self.direction
-        else:
+        elif not flag:
             self.speed = 1
 
     def is_killed(self, player):

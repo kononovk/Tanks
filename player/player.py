@@ -18,7 +18,7 @@ ORANGE = (255, 119, 0)
 class Player(pygame.sprite.Sprite):
     width = 60
     height = 60
-    hp = 3
+    hp = 1000
     points = 0
 
     def __init__(self, list_file_name, speed, id, x=0, y=0, direction=randint(0, 3)):
@@ -97,8 +97,8 @@ class Player(pygame.sprite.Sprite):
     "# Main collides processing function #"
     def collide(self, player2, platforms):
         "# Collides with another player processing #"
+        flag = False
         if pygame.sprite.collide_rect(self, player2):
-            flag = False
             for i in range(0, player2.width + 1):
                 if player2.rect.collidepoint(self.x + i,self.y) and self.direction == DIR_UP:
                     self.speed = 0
@@ -121,20 +121,26 @@ class Player(pygame.sprite.Sprite):
         "# Collides with platforms processing #"
         if platforms != None:
             if self.rect.collidelist(platforms) != -1:
-                if self.direction == self.prev_direction:
-                    self.speed = 0
-                    if self.direction == DIR_RIGHT:
-                        self.x = platforms[self.rect.collidelist(platforms)].x - 60
-                    if self.direction == DIR_LEFT:
-                        self.x = platforms[self.rect.collidelist(platforms)].x + 60
-                    if self.direction == DIR_UP:
-                        self.y = platforms[self.rect.collidelist(platforms)].y + 60
-                    if self.direction == DIR_DOWN:
-                        self.y = platforms[self.rect.collidelist(platforms)].y - 60
-                else:
+                flag1 = False
+                for i in range(0, player2.width):
+                    if platforms[self.rect.collidelist(platforms)].rect.collidepoint(self.x + i, self.y + 1) and self.direction == DIR_UP:
+                        self.speed = 0
+                        flag1 = True
+                    if platforms[self.rect.collidelist(platforms)].rect.collidepoint(self.x + 1,
+                                                   self.y + i) and self.direction == DIR_LEFT:
+                        self.speed = 0
+                        flag1 = True
+                    if platforms[self.rect.collidelist(platforms)].rect.collidepoint(self.x + i,
+                                                   self.y + 59) and self.direction == DIR_DOWN:
+                        self.speed = 0
+                        flag1 = True
+                    if platforms[self.rect.collidelist(platforms)].rect.collidepoint(self.x + 59,
+                                                   self.y + i) and self.direction == DIR_RIGHT:
+                        self.speed = 0
+                        flag1 = True
+                if not flag1:
                     self.speed = 1
-                    self.prev_direction = self.direction
-            else:
+            elif not flag:
                 self.speed = 1
 
     def is_killed(self):
