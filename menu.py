@@ -88,15 +88,11 @@ def killed(player1, player2, screen, win):
             return 2
     return False
 
-def killed_player(player1, screen, win):
+def killed_player(player1, screen, win, last_rec):
     if player1.is_killed():
         "# Writing new record in file #"
-        f = open("record.txt", 'r')
-        last_rec = f.read(1)
         if player1.points > int(last_rec):
             last_rec = player1.points
-        f.close()
-        open("record.txt", "w").close()
         f = open("record.txt", 'w')
         f.write(str(last_rec))
         player1.points = 0

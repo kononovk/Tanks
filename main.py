@@ -53,7 +53,7 @@ game_flag = game.menu(screen, win)
 screen.fill((0, 0, 0))
 
 "# Information string #"
-info_string = pygame.Surface((window_width, 30))
+info_string = pygame.Surface((window_width, 60))
 
 "#______________________________   MAIN   LOOP      ____________________________________#"
 "<-------------------------------------------------------------------------------------->"
@@ -67,13 +67,16 @@ tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
 player1 = plr.Player(tank_list, 1, 1, 100, 100)
 player1_bullets = []
 
-PLATFORM_WIDTH = 30
-PLATFORM_HEIGHT = 30
+PLATFORM_WIDTH = 60
+PLATFORM_HEIGHT = 60
 PLATFORM_COLOR = "#FF6262"
 
 "# Lifes textures images #"
 life1_img = pygame.image.load(r'textures\life1.png')
 life2_img = pygame.image.load((r'textures\life2.png'))
+
+f = open("record.txt", 'r')
+last_rec = int(f.read(1))
 
 "---# The beginning of rendering cycle with 2 players #---"
 run, run_main = True, True
@@ -148,13 +151,20 @@ while run_main:
             entities.draw(win)
             pygame.display.update()
             win.blit(info_string, (0, 0))
-            win.blit(screen, (0, 30))
+            win.blit(screen, (0, 60))
             info_string.fill((25, 80, 40))
 
-            "# Fonts rendering #"
-            info_string.blit(
-                hp_font.render(u"(PL1) Lives: " + str(player1.hp), 1, (255, 0, 0)),
-                (10, 5))
+            "# Lifes rendering #"
+            for i in life1_rect:
+                win.blit(life1_img, i)
+            "# Record and points rendering #"
+            if last_rec > player1.points:
+                info_string.blit(hp_font.render(u"Record: " + str(last_rec), 1, (255, 0, 0)), (window_width//2 - 80, 5))
+                info_string.blit(hp_font.render(u"Points: " + str(player1.points), 1, (255, 0, 0)), (750, 5))
+            else:
+                info_string.blit(hp_font.render(u"Record: " + str(player1.points), 1, (255, 0, 0)), (window_width//2 - 80, 5))
+
+
             "# event loop #"
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -171,7 +181,8 @@ while run_main:
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
                 for p in platforms:
-                    if (bullet.x <= p.x + 60 and bullet.x >= p.x) and (bullet.y <= p.y + 60 and bullet.y >= p.y) and len(player1_bullets) != 0:
+                    if (bullet.x <= p.x + 60 and bullet.x >= p.x) and (bullet.y <= p.y + 60 and bullet.y >= p.y) and \
+                            len(player1_bullets) != 0:
                         player1_bullets.pop(player1_bullets.index(bullet))
                 for bot in addbot:
                     if bullet.is_hit(bot) and len(player1_bullets) != 0:
@@ -197,6 +208,7 @@ while run_main:
                     if bullet.is_hit_bot(player1) and len(bot_bullets[i]) != 0:
                         bot_bullets[i].pop(bot_bullets[i].index(bullet))
                         player1.hp -= 1
+                        life1_rect.pop(player1.hp)
 
             keys = pygame.key.get_pressed()
             player1.update(keys, window_width, window_height, addbot[0], platforms, 0)
@@ -235,7 +247,7 @@ while run_main:
 
             "# Kills checking #"
             addbot = killed_bot(addbot, player1)
-            tmp = killed_player(player1, screen, win)
+            tmp = killed_player(player1, screen, win, last_rec)
             if tmp:
                 screen.fill((0, 0, 0))
                 player1.hp = 3
@@ -264,8 +276,6 @@ while run_main:
                 win.blit(life1_img, i)
             for i in life2_rect:
                 win.blit(life2_img, i)
-            # info_string.blit(hp_font.render(u"(PL1) Lives: " + str(player1.hp), 1, (255, 0, 0)), (10, 5))
-            # info_string.blit(hp_font.render(u"(PL2) Lives: " + str(player2.hp), 1, (255, 0, 0)), (window_width - 250, 5))
 
             "# event loop #"
             for event in pygame.event.get():
