@@ -11,6 +11,7 @@ from player import player as plr
 from bot import bot as boobs
 from block import block as plt
 from menu import Menu, killed, killed_player
+from random import randint
 
 
 def killed_bot(addbot, player):
@@ -96,17 +97,35 @@ while run_main:
         entities.add(player1)
         noblock_x = []
         noblock_y = []
-        level = ['---------------',
-                 '-   -     -   -',
-                 '-   -     -   -',
-                 '-   -         -',
-                 '-   -         -',
-                 '-   -     -   -',
-                 '-   -     -   -',
-                 '-   -     -   -',
-                 '-         -   -',
-                 '-         -   -',
-                 '---------------']
+        
+        "# Maps processing #"
+        lvl_nums = []
+        with open('levels.txt') as f:
+            ch = f.read(1)
+            while ch:
+                if ch.isdigit():
+                    lvl_nums.append(int(ch))
+                ch = f.read(1)
+        lev_num = lvl_nums[randint(0, len(lvl_nums) - 1)]
+        f.close()
+
+        flag = True
+        level = []
+        f = open('levels.txt', 'r')
+        for line in f:
+            line = line[0:len(line) - 1]
+            if len(line) == 0:
+                continue
+            if line[0] != str(lev_num) and flag:
+                continue
+            if line[0] == str(lev_num):
+                flag = False
+            if not line[0].isdigit() and line[0] != '\n':
+                level.append(line)
+            if line[0] == str(lev_num + 1):
+                break
+        f.close()
+
         x = y = 0                               # coordinates
         for i in range(0,len(level)):                       # all string
             for j in range(0, len(level[i])):                     # each symbol
