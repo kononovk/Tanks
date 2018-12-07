@@ -11,6 +11,7 @@ from player import player as plr
 from bot import bot as boobs
 from block import block as plt
 from menu import Menu, killed, killed_player
+from random import randint
 
 
 def killed_bot(addbot, player):
