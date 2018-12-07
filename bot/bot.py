@@ -8,6 +8,7 @@
 # ----------------------------------------------------
 import pygame
 from random import randint
+import time
 
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -56,7 +57,9 @@ class Bot(pygame.sprite.Sprite):
         win.blit(self.image, self.rect)
 
     def update(self, window_width, window_height, pl, platforms):
-        if pl.x != self.x or pl.y != self.y:
+        timer = int(time.time())
+        l = randint(1,11)
+        if (pl.x != self.x or pl.y != self.y) and timer % l == 0:
             if pl.x > self.x and self.x < window_width - self.width and self.rect.collidelist(platforms) == -1:
                 self.prev_direction = self.direction
                 self.image = self.image_right
@@ -87,7 +90,7 @@ class Bot(pygame.sprite.Sprite):
         # Collides with another player processing #
         if pygame.sprite.collide_rect(self, player1):
             flag = False
-            for i in range(0, 60):
+            for i in range(0, player1.width + 1):
                 if player1.rect.collidepoint(self.x + i,self.y) and self.direction == DIR_UP:
                     self.speed = 0
                     flag = True
@@ -102,6 +105,7 @@ class Bot(pygame.sprite.Sprite):
                     flag = True
             if not flag:
                 self.speed = 1
+            print(self.speed)
         else:
             self.speed = 1
 

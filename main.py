@@ -12,6 +12,7 @@ from bot import bot as boobs
 from block import block as plt
 from menu import Menu, killed, killed_player
 
+
 def killed_bot(addbot, player):
     for i in range(0,len(addbot)):
         if addbot[i].is_killed(player):
@@ -57,9 +58,9 @@ info_string = pygame.Surface((window_width, 30))
 "<-------------------------------------------------------------------------------------->"
 
 "# Creating player object #"
-tank_list = [r'textures\tanks\tank_'
-             r'up.png', r'textures\tanks\tank_right.png',
-             r'textures\tanks\tank_down.png', r'textures\tanks\tank_left.png']
+tank_list = [r'textures\tanks\tank-'
+             r'up.png', r'textures\tanks\tank-right.png',
+             r'textures\tanks\tank-down.png', r'textures\tanks\tank-left.png']
 tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
              r'textures\tanks\tank2_down.png', r'textures\tanks\tank2_left.png']
 player1 = plr.Player(tank_list, 1, 1, 100, 100)
@@ -180,6 +181,9 @@ while run_main:
 
             keys = pygame.key.get_pressed()
             player1.update(keys, window_width, window_height, addbot[0], platforms, 0)
+
+            for i in range(1, len(addbot)):
+                player1.update(keys, window_width, window_height, addbot[0], platforms, 0, False)
 
             for bot in addbot:
                 bot.update(window_width, window_height, player1, platforms)
