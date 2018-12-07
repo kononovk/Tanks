@@ -95,6 +95,7 @@ class Player(pygame.sprite.Sprite):
 
     "# Main collides processing function #"
     def collide(self, player2, platforms, keys):
+        is_in_move = False
         "# Collides with another player processing #"
         if pygame.sprite.collide_rect(self, player2):
             flag = False

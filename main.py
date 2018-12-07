@@ -276,7 +276,8 @@ while run_main:
                 if bullet.y in range(0, window_width + 1):
                     bullet.y += bullet.speed_y
                 else:
-                    player2_bullets.pop(player2_bullets.index(bullet))
+                    if len(player2_bullets) != 0:
+                        player2_bullets.pop(player2_bullets.index(bullet))
                 if bullet.is_hit(player1):
                     player1.hp -= 1
                     if len(player2_bullets) != 0:
