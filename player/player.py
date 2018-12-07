@@ -89,9 +89,9 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.image_up
                     self.direction = DIR_UP
                     self.y -= self.speed
-            self.x_center = self.x + self.width / 2
-            self.y_center = self.y + self.height / 2
-            self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
+        self.x_center = self.x + self.width / 2
+        self.y_center = self.y + self.height / 2
+        self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
         self.collide(pl, platforms)
 
     "# Main collides processing function #"
@@ -121,25 +121,19 @@ class Player(pygame.sprite.Sprite):
         "# Collides with platforms processing #"
         if platforms != None:
             if self.rect.collidelist(platforms) != -1:
-                flag1 = False
-                for i in range(0, player2.width):
-                    if platforms[self.rect.collidelist(platforms)].rect.collidepoint(self.x + i, self.y + 1) and self.direction == DIR_UP:
-                        self.speed = 0
-                        flag1 = True
-                    if platforms[self.rect.collidelist(platforms)].rect.collidepoint(self.x + 1,
-                                                   self.y + i) and self.direction == DIR_LEFT:
-                        self.speed = 0
-                        flag1 = True
-                    if platforms[self.rect.collidelist(platforms)].rect.collidepoint(self.x + i,
-                                                   self.y + 59) and self.direction == DIR_DOWN:
-                        self.speed = 0
-                        flag1 = True
-                    if platforms[self.rect.collidelist(platforms)].rect.collidepoint(self.x + 59,
-                                                   self.y + i) and self.direction == DIR_RIGHT:
-                        self.speed = 0
-                        flag1 = True
-                if not flag1:
+                if self.direction == self.prev_direction:
+                    self.speed = 0
+                    if self.direction == DIR_RIGHT:
+                        self.x = platforms[self.rect.collidelist(platforms)].x - 60
+                    if self.direction == DIR_LEFT:
+                        self.x = platforms[self.rect.collidelist(platforms)].x + 60
+                    if self.direction == DIR_UP:
+                        self.y = platforms[self.rect.collidelist(platforms)].y + 60
+                    if self.direction == DIR_DOWN:
+                        self.y = platforms[self.rect.collidelist(platforms)].y - 60
+                else:
                     self.speed = 1
+                    self.prev_direction = self.direction
             elif not flag:
                 self.speed = 1
 
