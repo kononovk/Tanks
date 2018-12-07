@@ -18,7 +18,7 @@ ORANGE = (255, 119, 0)
 class Player(pygame.sprite.Sprite):
     width = 60
     height = 60
-    hp = 1000
+    hp = 3
     points = 0
 
     def __init__(self, list_file_name, speed, x=0, y=0, direction=randint(0, 3), id=1):

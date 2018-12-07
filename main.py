@@ -48,8 +48,10 @@ game_flag = game.menu(screen, win)
 screen.fill((0, 0, 0))
 "# Information string #"
 info_string = pygame.Surface((window_width, 30))
-life_img = pygame.image.load(r'textures\life1.png')
-life_rect = pygame.Rect((0, 0), (0, 0)) # coordinates, (width, height)
+life1_img = pygame.image.load(r'textures\life1.png')
+life1_rect = pygame.Rect((0, 0), (0, 0)) # coordinates, (width, height)
+life2_img = pygame.image.load((r'textures\life2.png'))
+life2_rect = pygame.Rect((870, 0), (0, 0))
 
 "#______________________________   MAIN   LOOP      ____________________________________#"
 "<-------------------------------------------------------------------------------------->"
@@ -208,7 +210,7 @@ while run_main:
                 run = False
 
     if game_flag == 2:
-        player2 = plr.Player(tank_list, 1, window_width - 100 - 50, window_height - 100 - 50)
+        player2 = plr.Player(tank_list2, 1, window_width - 100 - 50, window_height - 100 - 50)
         player2_bullets = []
         while run:
             screen.fill((0, 0, 0))
@@ -221,7 +223,8 @@ while run_main:
             info_string.fill((25, 80, 40))
 
             "# Fonts rendering #"
-            win.blit(life_img, life_rect)
+            win.blit(life1_img, life1_rect)
+            win.blit(life2_img, life2_rect)
             # info_string.blit(hp_font.render(u"(PL1) Lives: " + str(player1.hp), 1, (255, 0, 0)), (10, 5))
             # info_string.blit(hp_font.render(u"(PL2) Lives: " + str(player2.hp), 1, (255, 0, 0)), (window_width - 250, 5))
 
