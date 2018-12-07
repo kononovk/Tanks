@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
     hp = 3
     points = 0
 
-    def __init__(self, list_file_name, speed, x=0, y=0, direction=randint(0, 3), id=1):
+    def __init__(self, list_file_name, speed, id, x=0, y=0, direction=randint(0, 3)):
         self.id = id
         pygame.sprite.Sprite.__init__(self)
         # images for different directions

@@ -61,7 +61,7 @@ tank_list = [r'textures\tanks\tank_up.png', r'textures\tanks\tank_right.png',
              r'textures\tanks\tank_down.png', r'textures\tanks\tank_left.png']
 tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
              r'textures\tanks\tank2_down.png', r'textures\tanks\tank2_left.png']
-player1 = plr.Player(tank_list, 1, 100, 100)
+player1 = plr.Player(tank_list, 1, 1, 100, 100)
 player1_bullets = []
 
 PLATFORM_WIDTH = 60
@@ -223,7 +223,7 @@ while run_main:
                 run = False
 
     if game_flag == 2:
-        player2 = plr.Player(tank_list2, 1, window_width - 100 - 50, window_height - 100 - 50)
+        player2 = plr.Player(tank_list2, 1, 2, window_width - 100 - 50, window_height - 100 - 50)
         player2_bullets = []
         while run:
             screen.fill((0, 0, 0))
