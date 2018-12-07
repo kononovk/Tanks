@@ -45,57 +45,57 @@ class Player(pygame.sprite.Sprite):
     def draw(self, win):
         win.blit(self.image, self.rect)
 
-    def update(self, keys, window_width, window_height, pl, platforms, num=0):
-        if num == 0:
-            if keys[pygame.K_a] and self.x > 0:
-                self.prev_direction = self.direction
-                self.image = self.image_left
-                self.direction = DIR_LEFT
-                self.x -= self.speed
-            elif keys[pygame.K_d] and self.x < window_width - self.width:
-                self.prev_direction = self.direction
-                self.image = self.image_right
-                self.direction = DIR_RIGHT
-                self.x += self.speed
-            elif keys[pygame.K_s] and self.y < window_height - self.height:
-                self.prev_direction = self.direction
-                self.image = self.image_down
-                self.direction = DIR_DOWN
-                self.y += self.speed
-            elif keys[pygame.K_w] and self.y > 30:
-                self.prev_direction = self.direction
-                self.image = self.image_up
-                self.direction = DIR_UP
-                self.y -= self.speed
-        else:
-            if keys[pygame.K_LEFT] and self.x > 0:
-                self.prev_direction = self.direction
-                self.image = self.image_left
-                self.direction = DIR_LEFT
-                self.x -= self.speed
-            elif keys[pygame.K_RIGHT] and self.x < window_width - self.width:
-                self.prev_direction = self.direction
-                self.image = self.image_right
-                self.direction = DIR_RIGHT
-                self.x += self.speed
-            elif keys[pygame.K_DOWN] and self.y < window_height - self.height:
-                self.prev_direction = self.direction
-                self.image = self.image_down
-                self.direction = DIR_DOWN
-                self.y += self.speed
-            elif (keys[pygame.K_UP]) and self.y > 30:
-                self.prev_direction = self.direction
-                self.image = self.image_up
-                self.direction = DIR_UP
-                self.y -= self.speed
-        self.x_center = self.x + self.width / 2
-        self.y_center = self.y + self.height / 2
-        self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
-        self.collide(pl, platforms, keys)
+    def update(self, keys, window_width, window_height, pl, platforms, num=0, flag = True):
+        if flag:
+            if num == 0:
+                if keys[pygame.K_a] and self.x > 0:
+                    self.prev_direction = self.direction
+                    self.image = self.image_left
+                    self.direction = DIR_LEFT
+                    self.x -= self.speed
+                elif keys[pygame.K_d] and self.x < window_width - self.width:
+                    self.prev_direction = self.direction
+                    self.image = self.image_right
+                    self.direction = DIR_RIGHT
+                    self.x += self.speed
+                elif keys[pygame.K_s] and self.y < window_height - self.height:
+                    self.prev_direction = self.direction
+                    self.image = self.image_down
+                    self.direction = DIR_DOWN
+                    self.y += self.speed
+                elif keys[pygame.K_w] and self.y > 30:
+                    self.prev_direction = self.direction
+                    self.image = self.image_up
+                    self.direction = DIR_UP
+                    self.y -= self.speed
+            else:
+                if keys[pygame.K_LEFT] and self.x > 0:
+                    self.prev_direction = self.direction
+                    self.image = self.image_left
+                    self.direction = DIR_LEFT
+                    self.x -= self.speed
+                elif keys[pygame.K_RIGHT] and self.x < window_width - self.width:
+                    self.prev_direction = self.direction
+                    self.image = self.image_right
+                    self.direction = DIR_RIGHT
+                    self.x += self.speed
+                elif keys[pygame.K_DOWN] and self.y < window_height - self.height:
+                    self.prev_direction = self.direction
+                    self.image = self.image_down
+                    self.direction = DIR_DOWN
+                    self.y += self.speed
+                elif (keys[pygame.K_UP]) and self.y > 30:
+                    self.prev_direction = self.direction
+                    self.image = self.image_up
+                    self.direction = DIR_UP
+                    self.y -= self.speed
+            self.x_center = self.x + self.width / 2
+            self.y_center = self.y + self.height / 2
+            self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
+        self.collide(pl, platforms)
 
     "# Main collides processing function #"
-    def collide(self, player2, platforms, keys):
-        is_in_move = False
+    def collide(self, player2, platforms):
         "# Collides with another player processing #"
         if pygame.sprite.collide_rect(self, player2):
             flag = False
