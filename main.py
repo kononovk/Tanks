@@ -287,7 +287,7 @@ while run_main:
                     if len(player2_bullets) != 0:
                         player2_bullets.pop(player2_bullets.index(bullet))
                     if len(life1_rect) != 0:
-                        life1_rect.pop(2 - player1.hp)
+                        life1_rect.pop(player1.hp)
 
             "# Keys processing #"
             keys = pygame.key.get_pressed()
