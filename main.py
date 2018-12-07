@@ -11,7 +11,6 @@ from player import player as plr
 from bot import bot as boobs
 from block import block as plt
 from menu import Menu, killed, killed_player
-from random import randint
 
 
 def killed_bot(addbot, player):
@@ -97,9 +96,7 @@ while run_main:
         entities.add(player1)
         noblock_x = []
         noblock_y = []
-
-        num_of_level = randint(1, 2)
-
+        
         "# Maps processing #"
         lvl_nums = []
         with open('levels.txt') as f:
@@ -147,11 +144,10 @@ while run_main:
             "# Objects rendering #"
             for i in range(0, len(addbot)):
                 addbot[i].draw(win)
+            entities.draw(win)
             pygame.display.update()
             win.blit(info_string, (0, 0))
             win.blit(screen, (0, 30))
-            entities.draw(win)
-
             info_string.fill((25, 80, 40))
 
             "# Fonts rendering #"
@@ -241,7 +237,7 @@ while run_main:
             tmp = killed_player(player1, screen, win)
             if tmp:
                 screen.fill((0, 0, 0))
-                player1.hp = 3
+                player1.hp = 1000
                 player1.x, player1.y = 100, 100
                 player1_bullets.clear()
                 bot_bullets.clear()
@@ -291,6 +287,7 @@ while run_main:
                         player1_bullets.pop(player1_bullets.index(bullet))
                     if len(life2_rect) != 0:
                         life2_rect.pop(player2.hp)
+
 
             "# Bullets processing player2 #"
             for bullet in player2_bullets:
