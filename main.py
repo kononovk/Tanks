@@ -11,6 +11,7 @@ from player import player as plr
 from bot import bot as boobs
 from block import block as plt
 from menu import Menu, killed, killed_player
+from random import randint
 
 def killed_bot(addbot, player):
     for i in range(0,len(addbot)):
@@ -95,17 +96,37 @@ while run_main:
         entities.add(player1)
         noblock_x = []
         noblock_y = []
-        level = ['---------------',
-                 '-   -     -   -',
-                 '-   -     -   -',
-                 '-   -         -',
-                 '-   -         -',
-                 '-   -     -   -',
-                 '-   -     -   -',
-                 '-   -     -   -',
-                 '-         -   -',
-                 '-         -   -',
-                 '---------------']
+
+        num_of_level = randint(1, 2)
+
+        "# Maps processing #"
+        lvl_nums = []
+        with open('levels.txt') as f:
+            ch = f.read(1)
+            while ch:
+                if ch.isdigit():
+                    lvl_nums.append(int(ch))
+                ch = f.read(1)
+        lev_num = lvl_nums[randint(0, len(lvl_nums) - 1)]
+        f.close()
+
+        flag = True
+        level = []
+        f = open('levels.txt', 'r')
+        for line in f:
+            line = line[0:len(line) - 1]
+            if len(line) == 0:
+                continue
+            if line[0] != str(lev_num) and flag:
+                continue
+            if line[0] == str(lev_num):
+                flag = False
+            if not line[0].isdigit() and line[0] != '\n':
+                level.append(line)
+            if line[0] == str(lev_num + 1):
+                break
+        f.close()
+
         x = y = 0                               # coordinates
         for i in range(0,len(level)):                       # all string
             for j in range(0, len(level[i])):                     # each symbol
@@ -125,10 +146,11 @@ while run_main:
             "# Objects rendering #"
             for i in range(0, len(addbot)):
                 addbot[i].draw(win)
-            entities.draw(win)
             pygame.display.update()
             win.blit(info_string, (0, 0))
             win.blit(screen, (0, 30))
+            entities.draw(win)
+
             info_string.fill((25, 80, 40))
 
             "# Fonts rendering #"
@@ -215,7 +237,7 @@ while run_main:
             tmp = killed_player(player1, screen, win)
             if tmp:
                 screen.fill((0, 0, 0))
-                player1.hp = 1000
+                player1.hp = 3
                 player1.x, player1.y = 100, 100
                 player1_bullets.clear()
                 bot_bullets.clear()
@@ -265,7 +287,6 @@ while run_main:
                         player1_bullets.pop(player1_bullets.index(bullet))
                     if len(life2_rect) != 0:
                         life2_rect.pop(player2.hp)
-
 
             "# Bullets processing player2 #"
             for bullet in player2_bullets:
