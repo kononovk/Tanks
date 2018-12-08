@@ -21,8 +21,8 @@ def killed_bot(addbot, player):
             bot_bullets.pop(i)
             bot_bullets.append([])
             bot_bullets.append([])
-            addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1, 0.5))
-            addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1, 0.5))
+            addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1))
+            addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1))
     return addbot
 
 def hp_render(player1, player2):
@@ -143,7 +143,7 @@ while run_main:
                 x += PLATFORM_WIDTH             # блоки платформы ставятся на ширине блоков
             y += PLATFORM_HEIGHT                # то же самое и с высотой
             x = 0
-        addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1, 0.5))
+        addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1))
         while run:
             screen.fill((0, 0, 0))
             "# Objects rendering #"
