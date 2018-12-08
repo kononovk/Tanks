@@ -76,7 +76,7 @@ life1_img = pygame.image.load(r'textures\life1.png')
 life2_img = pygame.image.load((r'textures\life2.png'))
 
 f = open("record.txt", 'r')
-last_rec = int(f.read(1))
+last_rec = int(f.readline())
 
 "---# The beginning of rendering cycle with 2 players #---"
 run, run_main = True, True
