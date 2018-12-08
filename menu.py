@@ -34,7 +34,7 @@ class Menu(pygame.sprite.Sprite):
                 host.blit(font.render(i[2], 1, i[4]), (i[0], i[1]))
             host.blit(self.image, self.rect)
             if flag != 0:
-                host.blit(font.render(u"Wins player " + str(flag), 1, (255, 215, 0)), (80, 5))
+                host.blit(font.render(u"Wins player " + str(flag), 1, (255, 215, 0)), (265, 500))
 
     "# Menu starting function#"
     def menu(self, screen, win, menu_color=(0, 0, 0)): # 0, 100, 200

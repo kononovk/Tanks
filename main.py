@@ -327,8 +327,8 @@ while run_main:
             if keys[pygame.K_ESCAPE]:
                 tmp = game.menu(screen, win)
                 if game_flag != tmp:
-                    player1.x = 100
-                    player1.y = 100
+                    player1.x = 200
+                    player1.y = 200
                     game_flag  = tmp
                 run = False
 
@@ -349,7 +349,7 @@ while run_main:
                 screen.fill((0, 0, 0))
                 player1.hp = 3
                 player2.hp = 3
-                player1.x, player1.y = 100, 100
+                player1.x, player1.y = 200, 200
                 player2.x, player2.y = window_width - 150, window_height - 150
                 player1_bullets.clear()
                 player2_bullets.clear()
