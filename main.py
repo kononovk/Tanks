@@ -21,8 +21,8 @@ def killed_bot(addbot, player):
             bot_bullets.pop(i)
             bot_bullets.append([])
             bot_bullets.append([])
-            addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1, 0.4))
-            addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1, 0.4))
+            addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1, 0.5))
+            addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1, 0.5))
     return addbot
 
 def hp_render(player1, player2):
@@ -64,7 +64,7 @@ tank_list = [r'textures\tanks\tank-'
              r'textures\tanks\tank-down.png', r'textures\tanks\tank-left.png']
 tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
              r'textures\tanks\tank2_down.png', r'textures\tanks\tank2_left.png']
-player1 = plr.Player(tank_list, 1, 1, 100, 100)
+player1 = plr.Player(tank_list, 1, 1, 200, 200)
 player1_bullets = []
 
 PLATFORM_WIDTH = 60
@@ -137,12 +137,13 @@ while run_main:
                     entities.add(pf)
                     platforms.append(pf)
                 else:
-                    noblock_x.append(j)
-                    noblock_y.append(i)
+                    if j !=0 and i != 0:
+                        noblock_x.append(j)
+                        noblock_y.append(i)
                 x += PLATFORM_WIDTH             # блоки платформы ставятся на ширине блоков
             y += PLATFORM_HEIGHT                # то же самое и с высотой
             x = 0
-        addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1,0.4))
+        addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1, 0.5))
         while run:
             screen.fill((0, 0, 0))
             "# Objects rendering #"
@@ -252,7 +253,7 @@ while run_main:
             if tmp:
                 screen.fill((0, 0, 0))
                 player1.hp = 3
-                player1.x, player1.y = 100, 100
+                player1.x, player1.y = 200, 200
                 player1_bullets.clear()
                 bot_bullets.clear()
                 if tmp == 2:

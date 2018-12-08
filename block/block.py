@@ -2,7 +2,6 @@ import pygame
 
 PLATFORM_WIDTH = 60
 PLATFORM_HEIGHT = 60
-PLATFORM_COLOR = "#FF6262"
 
 
 class Platform(pygame.sprite.Sprite):

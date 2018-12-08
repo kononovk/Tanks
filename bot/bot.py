@@ -37,6 +37,7 @@ class Bot(pygame.sprite.Sprite):
         self.surface.blit(self.image, (0, 0), (0, 0, self.width, self.height))
         self.rect = self.surface.get_rect()
         self.speed = speed
+        self.k = randint(0,3)
         self.timer = randint(1,20)
         m = randint(0, len(noblock_x)-1)
         for i in range(0, len(noblock_x)):
@@ -82,6 +83,40 @@ class Bot(pygame.sprite.Sprite):
                     self.image = self.image_up
                     self.direction = DIR_UP
                     self.y -= self.speed
+        else:
+            if self.k == 1 and self.x < window_width - self.width and self.rect.collidelist(platforms) == -1:
+                self.prev_direction = self.direction
+                self.image = self.image_right
+                self.direction = DIR_RIGHT
+                self.x += self.speed
+                if self.rect.collidelist(platforms) != -1:
+                    self.k = k + 1
+            elif self.k == 2 and  self.y < window_height - self.height and self.rect.collidelist(platforms) == -1:
+                self.prev_direction = self.direction
+                self.image = self.image_down
+                self.direction = DIR_DOWN
+                self.y += self.speed
+                if self.rect.collidelist(platforms) != -1:
+                    self.k += + 1
+            elif self.k == 3 and self.x > 0 and self.rect.collidelist(platforms) == -1:
+                self.prev_direction = self.direction
+                self.image = self.image_left
+                self.direction = DIR_LEFT
+                self.x -= self.speed
+                if self.rect.collidelist(platforms) != -1:
+                    self.k = 0
+            elif self.k ==0 and self.y > 30 and self.rect.collidelist(platforms) == -1:
+                self.prev_direction = self.direction
+                self.image = self.image_up
+                self.direction = DIR_UP
+                self.y -= self.speed
+                if self.rect.collidelist(platforms) != -1:
+                    self.k = 1
+            else:
+                self.k += 1
+                if self.k >3:
+                    self.k = 0
+
 
         self.x_center = self.x + self.width / 2
         self.y_center = self.y + self.height / 2
