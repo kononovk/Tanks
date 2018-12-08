@@ -75,9 +75,6 @@ PLATFORM_COLOR = "#FF6262"
 life1_img = pygame.image.load(r'textures\life1.png')
 life2_img = pygame.image.load((r'textures\life2.png'))
 
-f = open("record.txt", 'r')
-last_rec = int(f.readline())
-
 "---# The beginning of rendering cycle with 2 players #---"
 run, run_main = True, True
 
@@ -89,6 +86,9 @@ while run_main:
     life2_rect = [pygame.Rect((window_width - 30, 0), (0, 0)),
                   pygame.Rect((window_width - 60, 0), (0, 0)),
                   pygame.Rect((window_width - 90, 0), (0, 0))]
+
+    f = open("record.txt", 'r')
+    last_rec = int(f.readline())
 
     run = True
     if game_flag == 1:
@@ -227,6 +227,13 @@ while run_main:
                 if game_flag != tmp:
                     player1.x = 100
                     player1.y = 100
+                    if player1.points > int(last_rec):
+                        last_rec = player1.points
+                    f = open("record.txt", 'w')
+                    f.write(str(last_rec))
+                    player1.points = 0
+                    f.close()
+                    player1.points = 0
                     game_flag  = tmp
                 run = False
             elif keys[pygame.K_SPACE]:                             # Player's bullets
@@ -252,7 +259,7 @@ while run_main:
             tmp = killed_player(player1, screen, win, last_rec)
             if tmp:
                 screen.fill((0, 0, 0))
-                player1.hp = 3
+                player1.hp = 3  
                 player1.x, player1.y = 200, 200
                 player1_bullets.clear()
                 bot_bullets.clear()

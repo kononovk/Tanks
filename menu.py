@@ -97,7 +97,6 @@ def killed(player1, player2, screen, win):
             return 2
     return False
 
-
 def killed_player(player1, screen, win, last_rec):
     if player1.is_killed():
         "# Writing new record in file #"
@@ -106,6 +105,7 @@ def killed_player(player1, screen, win, last_rec):
         f = open("record.txt", 'w')
         f.write(str(last_rec))
         player1.points = 0
+        f.close()
 
         par = [(310, 280, u'Try again', (250, 250, 30), (250, 250, 250), 0),
                (310, 350, u'Main Menu', (250, 250, 30), (250, 250, 250), 1),
