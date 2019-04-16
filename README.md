@@ -1,8 +1,8 @@
 **Tanks**
 
-__Николай Кононов, Кирилл Обухов. гр.103__
+__Nickolay Kononov, Obukhov Kirill__
 
-Игра является измененной версией популярной игры 1990-х _"Battle City Tanks"_
-Мы хотим создать игру, в которой можно будет выбирать между игрой с ботами и с другом.
+This game is a modified version of the popular game _"Battle City Tanks"_
+In this game you can choose between playing with bots and with a friend.
 
 
