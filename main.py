@@ -15,7 +15,7 @@ from random import randint
 
 
 def killed_bot(addbot, player):
-    for i in range(0,len(addbot)):
+    for i in range(0, len(addbot)):
         if addbot[i].is_killed(player):
             addbot.pop(i)
             bot_bullets.pop(i)
@@ -25,15 +25,17 @@ def killed_bot(addbot, player):
             addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1))
     return addbot
 
+
 def hp_render(player1, player2):
     pass
+
 
 "# Data variables #"
 window_width = 900
 window_height = 660
 
 "# Window creating  #"
-pygame.display.set_icon(pygame.image.load(r"textures\icon.png"))
+pygame.display.set_icon(pygame.image.load(r"./textures/icon.png"))
 pygame.init()
 win = pygame.display.set_mode((window_width, window_height))
 pygame.display.set_caption("NKOK_Shooting")
@@ -41,7 +43,7 @@ screen = pygame.Surface((window_width, window_height))
 
 "# Font creating #"
 pygame.font.init()
-hp_font = pygame.font.Font(r"textures\Fonts.ttf", 24)
+hp_font = pygame.font.Font(r"./textures/Fonts.ttf", 24)
 
 "# Menu paragraphs #"
 par = [(310, 280, u'1 Player', (250, 250, 30), (250, 250, 250), 0),  # purple = (250, 30, 250)
@@ -59,11 +61,11 @@ info_string = pygame.Surface((window_width, 60))
 "<-------------------------------------------------------------------------------------->"
 
 "# Creating player object #"
-tank_list = [r'textures\tanks\tank-'
-             r'up.png', r'textures\tanks\tank-right.png',
-             r'textures\tanks\tank-down.png', r'textures\tanks\tank-left.png']
-tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
-             r'textures\tanks\tank2_down.png', r'textures\tanks\tank2_left.png']
+tank_list = [r'textures/tanks/tank-'
+             r'up.png', r'textures/tanks/tank-right.png',
+             r'./textures/tanks/tank-down.png', r'textures/tanks/tank-left.png']
+tank_list2 = [r'./textures/tanks/tank2_up.png', r'textures/tanks/tank2_right.png',
+              r'./textures/tanks/tank2_down.png', r'./textures/tanks/tank2_left.png']
 player1 = plr.Player(tank_list, 1, 1, 200, 200)
 player1_bullets = []
 
@@ -72,8 +74,8 @@ PLATFORM_HEIGHT = 60
 PLATFORM_COLOR = "#FF6262"
 
 "# Lifes textures images #"
-life1_img = pygame.image.load(r'textures\life1.png')
-life2_img = pygame.image.load((r'textures\life2.png'))
+life1_img = pygame.image.load(r'textures/life1.png')
+life2_img = pygame.image.load((r'textures/life2.png'))
 
 "---# The beginning of rendering cycle with 2 players #---"
 run, run_main = True, True
@@ -95,12 +97,12 @@ while run_main:
         addbot = []
         bot_bullets = []
         bot_bullets.append([])
-        entities = pygame.sprite.Group()        # all objects
-        platforms = []                          # blocks, we will bump on
+        entities = pygame.sprite.Group()  # all objects
+        platforms = []  # blocks, we will bump on
         entities.add(player1)
         noblock_x = []
         noblock_y = []
-        
+
         "# Maps processing #"
         lvl_nums = []
         with open('levels.txt') as f:
@@ -123,25 +125,25 @@ while run_main:
                 continue
             if line[0] == str(lev_num):
                 flag = False
-            if not line[0].isdigit() and line[0] != '\n':
+            if not line[0].isdigit() and line[0] != '/n':
                 level.append(line)
             if line[0] == str(lev_num + 1):
                 break
         f.close()
 
-        x = y = 0                               # coordinates
-        for i in range(0,len(level)):                       # all string
-            for j in range(0, len(level[i])):                     # each symbol
+        x = y = 0  # coordinates
+        for i in range(0, len(level)):  # all string
+            for j in range(0, len(level[i])):  # each symbol
                 if level[i][j] == "-":
                     pf = plt.Platform(x, y)
                     entities.add(pf)
                     platforms.append(pf)
                 else:
-                    if j !=0 and i != 0:
+                    if j != 0 and i != 0:
                         noblock_x.append(j)
                         noblock_y.append(i)
-                x += PLATFORM_WIDTH             # блоки платформы ставятся на ширине блоков
-            y += PLATFORM_HEIGHT                # то же самое и с высотой
+                x += PLATFORM_WIDTH  # блоки платформы ставятся на ширине блоков
+            y += PLATFORM_HEIGHT  # то же самое и с высотой
             x = 0
         addbot.append(boobs.Bot(tank_list2, noblock_x, noblock_y, player1))
         while run:
@@ -160,11 +162,12 @@ while run_main:
                 win.blit(life1_img, i)
             "# Record and points rendering #"
             if last_rec > player1.points:
-                info_string.blit(hp_font.render(u"Record: " + str(last_rec), 1, (255, 215, 0)), (window_width//2 - 80, 5))
+                info_string.blit(hp_font.render(u"Record: " + str(last_rec), 1, (255, 215, 0)),
+                                 (window_width // 2 - 80, 5))
                 info_string.blit(hp_font.render(u"Points: " + str(player1.points), 1, (255, 215, 0)), (750, 5))
             else:
-                info_string.blit(hp_font.render(u"Record: " + str(player1.points), 1, (255, 215, 0)), (window_width//2 - 80, 5))
-
+                info_string.blit(hp_font.render(u"Record: " + str(player1.points), 1, (255, 215, 0)),
+                                 (window_width // 2 - 80, 5))
 
             "# event loop #"
             for event in pygame.event.get():
@@ -173,7 +176,7 @@ while run_main:
 
             "# Bullets processing player1 #"
             for bullet in player1_bullets:
-                if bullet.x in range(0, window_width + 1):
+                if bullet.x in range(window_width + 1):
                     bullet.x += bullet.speed_x
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
@@ -182,8 +185,8 @@ while run_main:
                 else:
                     player1_bullets.pop(player1_bullets.index(bullet))
                 for p in platforms:
-                    if (bullet.x <= p.x + 60 and bullet.x >= p.x) and (bullet.y <= p.y + 60 and bullet.y >= p.y) and \
-                            len(player1_bullets) != 0:
+                    if (p.x <= bullet.x <= p.x + 60 and p.y <= bullet.y <= p.y + 60 and
+                            player1_bullets):
                         player1_bullets.pop(player1_bullets.index(bullet))
                 for bot in addbot:
                     if bullet.is_hit(bot) and len(player1_bullets) != 0:
@@ -203,8 +206,8 @@ while run_main:
                         bot_bullets[i].pop(bot_bullets[i].index(bullet))
                     for p in platforms:
                         if (bullet.x <= p.x + 60 and bullet.x >= p.x) and \
-                           (bullet.y <= p.y + 60 and bullet.y >= p.y) and \
-                           (len(bot_bullets[i]) != 0):
+                                (bullet.y <= p.y + 60 and bullet.y >= p.y) and \
+                                (len(bot_bullets[i]) != 0):
                             bot_bullets[i].pop(bot_bullets[i].index(bullet))
                     if bullet.is_hit_bot(player1) and len(bot_bullets[i]) != 0:
                         bot_bullets[i].pop(bot_bullets[i].index(bullet))
@@ -222,7 +225,7 @@ while run_main:
                 bot.update(window_width, window_height, player1, platforms)
 
             "# Keys processing #"
-            if keys[pygame.K_ESCAPE]:                              # Exit yo menu
+            if keys[pygame.K_ESCAPE]:  # Exit yo menu
                 tmp = game.menu(screen, win)
                 if game_flag != tmp:
                     player1.x = 100
@@ -234,16 +237,16 @@ while run_main:
                     player1.points = 0
                     f.close()
                     player1.points = 0
-                    game_flag  = tmp
+                    game_flag = tmp
                 run = False
-            elif keys[pygame.K_SPACE]:                             # Player's bullets
+            elif keys[pygame.K_SPACE]:  # Player's bullets
                 if len(player1_bullets) < 1:
                     player1_bullets.append(plr.Bullet(player1))
 
             "# Bot's bullets #"
             for i in range(0, len(addbot)):
                 if ((addbot[i].x >= player1.x and addbot[i].x <= player1.x + 60) or
-                    (addbot[i].y >= player1.y  and addbot[i].y <= player1.y + 60)) and len(bot_bullets[i]) < 1:
+                    (addbot[i].y >= player1.y and addbot[i].y <= player1.y + 60)) and len(bot_bullets[i]) < 1:
                     bot_bullets[i].append(boobs.BulletBot(addbot[i]))
 
             "# Bullets drawing #"
@@ -259,7 +262,7 @@ while run_main:
             tmp = killed_player(player1, screen, win, last_rec)
             if tmp:
                 screen.fill((0, 0, 0))
-                player1.hp = 3  
+                player1.hp = 3
                 player1.x, player1.y = 200, 200
                 player1_bullets.clear()
                 bot_bullets.clear()
@@ -308,7 +311,6 @@ while run_main:
                     if len(life2_rect) != 0:
                         life2_rect.pop(player2.hp)
 
-
             "# Bullets processing player2 #"
             for bullet in player2_bullets:
                 if bullet.x in range(0, window_width + 1):
@@ -336,7 +338,7 @@ while run_main:
                 if game_flag != tmp:
                     player1.x = 200
                     player1.y = 200
-                    game_flag  = tmp
+                    game_flag = tmp
                 run = False
 
             "# Shooting processing #"

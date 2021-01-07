@@ -11,13 +11,13 @@ from player.player import Player, Bullet
 from bot.bot import Bot, BulletBot
 
 
-tank_list2 = [r'textures\tanks\tank2_up.png', r'textures\tanks\tank2_right.png',
-              r'textures\tanks\tank2_down.png', r'textures\tanks\tank2_left.png']
+tank_list2 = [r'textures/tanks/tank2_up.png', r'textures/tanks/tank2_right.png',
+              r'textures/tanks/tank2_down.png', r'textures/tanks/tank2_left.png']
 
 
 # Main menu class
 class Menu(pygame.sprite.Sprite):
-    def __init__(self, paragraphs, FName = r'textures\battle-city.png', x = 125, y = 10, wins=0):
+    def __init__(self, paragraphs, FName = r'./textures/battle-city.png', x = 125, y = 10, wins=0):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(FName)
         self.rect = pygame.Rect(x, y, 100, 100)
@@ -39,7 +39,7 @@ class Menu(pygame.sprite.Sprite):
     "# Menu starting function#"
     def menu(self, screen, win, menu_color=(0, 0, 0)): # 0, 100, 200
         done = True
-        font_menu = pygame.font.Font(r"textures\Fonts.ttf", 50)
+        font_menu = pygame.font.Font(r"./textures/Fonts.ttf", 50)
         prg = 0
         while done:
             screen.fill(menu_color)
@@ -85,9 +85,9 @@ def killed(player1, player2, screen, win):
                (310, 350, u'Main Menu', (250, 250, 30), (250, 250, 250), 1),
                (310, 420, u'Exit', (250, 250, 30), (250, 250, 250), 2)]
         if pl1:
-            end_menu = Menu(par, r'textures\game-over.png', 260, 70, 2)
+            end_menu = Menu(par, r'textures/game-over.png', 260, 70, 2)
         else:
-            end_menu = Menu(par, r'textures\game-over.png', 260, 70, 1)
+            end_menu = Menu(par, r'textures/game-over.png', 260, 70, 1)
         game_flag = end_menu.menu(screen, win, (0, 0, 0))
         # If user have chosen 'try again' return 1
         if game_flag == 1:
@@ -110,7 +110,7 @@ def killed_player(player1, screen, win, last_rec):
         par = [(310, 280, u'Try again', (250, 250, 30), (250, 250, 250), 0),
                (310, 350, u'Main Menu', (250, 250, 30), (250, 250, 250), 1),
                (310, 420, u'Exit', (250, 250, 30), (250, 250, 250), 2)]
-        end_menu = Menu(par, r'textures\game-over.png', 260, 70)
+        end_menu = Menu(par, r'textures/game-over.png', 260, 70)
         game_flag = end_menu.menu(screen, win, (0, 0, 0))
         # If user have chosen 'try again' return 1
         if game_flag == 1:

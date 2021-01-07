@@ -13,7 +13,8 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 ORANGE = (255, 119, 0)
-(DIR_UP, DIR_RIGHT, DIR_DOWN, DIR_LEFT) = range(4)
+DIR_UP, DIR_RIGHT, DIR_DOWN, DIR_LEFT = range(4)
+
 
 class Player(pygame.sprite.Sprite):
     width = 60
@@ -45,7 +46,7 @@ class Player(pygame.sprite.Sprite):
     def draw(self, win):
         win.blit(self.image, self.rect)
 
-    def update(self, keys, window_width, window_height, pl, platforms, num=0, flag = True):
+    def update(self, keys, window_width, window_height, pl, platforms, num=0, flag=True):
         if flag:
             if num == 0:
                 if keys[pygame.K_a] and self.x > 0:
@@ -95,21 +96,22 @@ class Player(pygame.sprite.Sprite):
         self.collide(pl, platforms)
 
     "# Main collides processing function #"
+
     def collide(self, player2, platforms):
-        "# Collides with another player processing #"
+        """ Collides with another player processing """
         flag = False
         if pygame.sprite.collide_rect(self, player2):
-            for i in range(0, player2.width + 1):
-                if player2.rect.collidepoint(self.x + i,self.y) and self.direction == DIR_UP:
+            for i in range(player2.width + 1):
+                if player2.rect.collidepoint(self.x + i, self.y) and self.direction == DIR_UP:
                     self.speed = 0
                     flag = True
-                elif player2.rect.collidepoint(self.x,self.y + i) and self.direction == DIR_LEFT:
+                elif player2.rect.collidepoint(self.x, self.y + i) and self.direction == DIR_LEFT:
                     self.speed = 0
                     flag = True
-                elif player2.rect.collidepoint(self.x + i,self.y + 60) and self.direction == DIR_DOWN:
+                elif player2.rect.collidepoint(self.x + i, self.y + 60) and self.direction == DIR_DOWN:
                     self.speed = 0
                     flag = True
-                elif player2.rect.collidepoint(self.x + 60,self.y + i) and self.direction == DIR_RIGHT:
+                elif player2.rect.collidepoint(self.x + 60, self.y + i) and self.direction == DIR_RIGHT:
                     self.speed = 0
                     flag = True
             if not flag:
@@ -117,9 +119,8 @@ class Player(pygame.sprite.Sprite):
         else:
             self.speed = 1
 
-
         "# Collides with platforms processing #"
-        if platforms != None:
+        if platforms is not None:
             if self.rect.collidelist(platforms) != -1:
                 if self.direction == self.prev_direction:
                     self.speed = 0
@@ -193,8 +194,5 @@ class Bullet(pygame.sprite.Sprite):
             pygame.draw.circle(win, self.color, (int(self.x), int(self.y)), self.radius)
 
     def is_hit(self, player):
-        flag_x = self.x > player.x and self.x < player.x + player.width
-        flag_y = self.y > player.y and self.y < player.y + player.height
-        if flag_x and flag_y:
-            return True
-        return False
+        return bool(player.x < self.x < player.x + player.width
+                    and player.y < self.y < player.y + player.height)
