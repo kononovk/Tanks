@@ -26,10 +26,6 @@ def killed_bot(addbot, player):
     return addbot
 
 
-def hp_render(player1, player2):
-    pass
-
-
 "# Data variables #"
 window_width = 900
 window_height = 660

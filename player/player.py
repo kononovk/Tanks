@@ -95,7 +95,7 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.surface.get_rect(center=(self.x_center, self.y_center))
         self.collide(pl, platforms)
 
-    "# Main collides processing function #"
+    """ Main collides processing function """
 
     def collide(self, player2, platforms):
         """ Collides with another player processing """
